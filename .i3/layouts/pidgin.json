@@ -1,0 +1,207 @@
+// vim:ts=4:sw=4:et
+{
+    // tabbed split container with 3 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "percent": null,
+    "type": "con",
+    "nodes": [
+        {
+            // splith split container with 2 children
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splith",
+            "percent": 0.333333333333333,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 1011,
+                       "width": 1676,
+                       "x": 3280,
+                       "y": 18
+                    },
+                    "name": "Pidgin",
+                    "percent": 0.15875,
+                    "swallows": [
+                       {
+                        "title": "^Buddy\\-Liste$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    // splitv split container with 2 children
+                    "border": "normal",
+                    "floating": "auto_off",
+                    "layout": "tabbed",
+                    "percent": 0.84125,
+                    "type": "con",
+                    "nodes": [
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv1",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv2",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv3",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv4",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv5",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv6",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "normal",
+                            "current_border_width": 2,
+                            "floating": "auto_off",
+                            "name": "conv7",
+                            "percent": 0.5,
+                            "swallows": [
+                               {
+                                 "window_role": "^conversation$"
+                               }
+                            ],
+                            "type": "con"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 861,
+               "width": 1596,
+               "x": 2,
+               "y": 18
+            },
+            "name": "Quassel IRC",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^quassel$",
+                "instance": "^quasselclient$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "name": "Signal Desktop",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^Signal$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "name": "Mattermost Desktop",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^Mattermost$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 495,
+               "width": 702,
+               "x": 878,
+               "y": 365
+            },
+            "name": "TeamSpeak 3",
+            "percent": 0.333333333333333,
+            "swallows": [
+               {
+                "class": "^TeamSpeak\\ 3$",
+                "instance": "^ts3client_linux_amd64$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}

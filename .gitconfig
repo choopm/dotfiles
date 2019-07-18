@@ -1,0 +1,25 @@
+[user]
+  name = Christoph Hoopmann
+  email = christophhoopmann@gmail.com
+  signingkey = AB689BB7
+[push]
+  default = simple
+[core]
+  autocrlf = input
+  safecrlf = false
+  editor = vim
+[alias]
+  co = checkout
+  ci = commit
+  st = status -sb
+  br = branch
+  lg = log --show-signature
+  hist = log --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short
+  visual = !gitg
+  stat = shortlog -sne --no-merges
+[merge]
+  tool = vimdiff
+[diff]
+  tool = vimdiff
+
+;  vim: set ts=2 sw=2 tw=0 et :

@@ -1,0 +1,79 @@
+#  vim: set ts=2 sw=2 tw=0 et :
+
+export PRINTER="ifAsec_GmbH_Kyocera_ECOSYS_P6021cdn"
+export TERM="rxvt-256color"
+export BROWSER="icecat"
+
+if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
+  setleds -D +num
+  startx -- :1 vt1 -nolisten tcp > /dev/null
+fi
+
+HISTSIZE=100000
+SAVEHIST=100000
+ttyctl -f
+
+alias x='startx -- :1 vt1 -nolisten tcp > /dev/null'
+alias update='sudo /home/choopm/.scripts/archupdate.sh'
+alias feh='feh -g 1024x768 '
+alias sc='sudo systemctl'
+alias p='nc 0pointer.org 10101'
+alias pnc='nc -vlp 4242'
+alias more='less'
+alias d='dirs -v'
+alias ksm='/home/choopm/.scripts/ksm_stats.sh'
+alias htpasswd='echo -n "Username? "; read usr; pw=$(pwgen -1 18); hsh=$(openssl passwd -apr1 $pw); printf "$usr:$hsh\n#$usr:$pw\n"'
+alias termcolors='for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""'
+
+alias scudosscp='scp -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -C'
+alias scudosssh='TERM=xterm ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -l root'
+function scudosdump() {
+  if [[ $1 ]]; then
+    ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -l root $1 pg_dump -h localhost -U scudos -d lorica \| gzip -9c | gzip -d
+  else
+    echo "Missing host argument, ex: $0 10.101.13.254 > dump.sql"
+  fi
+}
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/fish-like.zsh
+source ~/.zsh/git-ahead-behind.vim
+
+function precmd() {
+  disambiguate-keeplast
+  gitaheadbehind
+	echo -e '\a\c'
+}
+
+function fsize() {
+  printf '\33]50;%s%d\007' "xft:Monospace:pixelsize=" $1
+}
+
+function exists { which $1 &> /dev/null }
+if exists percol; then
+  function percol_select_history() {
+    local tac
+    exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
+    BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
+    CURSOR=$#BUFFER         # move cursor
+    zle -R -c               # refresh
+  }
+
+  zle -N percol_select_history
+  bindkey '^R' percol_select_history
+fi
+
+function wttr {
+  if [[ ! $1 ]]; then 1="Dortmund"; fi
+  curl wttr.in/$1
+}
+
+function dict() {
+  w3m -dump "http://pocket.dict.cc?s=\"$*\"" | sed -r -e '/^([ ]{5,}.*)$/d' -e '1,2d' -e '/^$/d' -e '/^\[/d'
+}
+
+function mettify() {
+  url=$(curl -L --user-agent $0 -w "\n" -s "http://mett.work/?format=text&url=$1"); qrencode -m 1 -t ANSI $url; echo $url
+}
+
