@@ -1,6 +1,6 @@
 ! urxvt
-URxvt*geometry:         87x25
-URxvt*font:             xft:DejaVu Sans Mono for Powerline:style=Book:pixelsize=11
+URxvt*geometry:         90x28
+URxvt*font:             xft:DejaVu Sans Mono for Powerline:style=Book:pixelsize=12
 URxvt*letterSpace:      0
 URxvt*depth:            32
 URxvt*background:       [80]#000000

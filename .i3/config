@@ -13,7 +13,7 @@ set $Mon_LVDS LVDS1
 set $Mon_Left HDMI3
 set $Mon_Right HDMI2
 floating_modifier $mod
-font pango:Liberation Sans 8
+font pango:Liberation Sans 9
 workspace_auto_back_and_forth yes
 focus_follows_mouse yes
 mouse_warping output
@@ -160,10 +160,10 @@ bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left move left 100
+bindsym $mod+Shift+Down move down 100
+bindsym $mod+Shift+Up move up 100
+bindsym $mod+Shift+Right move right 100
 bindsym $mod+n move scratchpad
 bindsym $mod+Shift+n scratchpad show
 bindsym $mod+Shift+Escape move container to workspace back_and_forth; workspace back_and_forth

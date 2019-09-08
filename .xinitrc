@@ -28,6 +28,6 @@ if [ $(blkid -U E6DE-18C2 | wc -l) -eq 1 ]; then
   /home/choopm/.scripts/triplemon-work.sh /home/choopm/Dokumente/Wallpaper/dalek.png
 fi
 
-echo 140 | sudo tee /sys/devices/platform/i8042/serio1/serio2/sensitivity
+#echo 140 | sudo tee /sys/devices/platform/i8042/serio1/serio2/sensitivity
 
 exec i3
