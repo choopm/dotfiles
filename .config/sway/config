@@ -286,13 +286,9 @@ for_window [window_role="^.*Options"] floating enable
 for_window [title="^.*!F!.*"] floating enable
 for_window [window_role="Preferences$"] floating enable
 for_window [window_role="PasswordManager$"] floating enable
-for_window [title="Pylote"] fullscreen
 for_window [class="Galculator"] floating enable
 for_window [class="feh"] floating enable
 for_window [class="Gpicview"] floating enable
-for_window [class="ReLoad"] floating enable
-for_window [title="^.* - Oracle VM VirtualBox"] floating enable
-for_window [class="Keepassx"] floating enable
 for_window [class="Wine"] floating enable
 for_window [class="Pdfpc"] floating enable
 for_window [class="Arandr"] floating enable
@@ -317,10 +313,11 @@ assign [class="^NetBeans IDE"] $ws4
 assign [class="TeamSpeak 3"] $ws5
 assign [window_role="buddy_list"] $ws5
 assign [window_role="conversation"] $ws5
+assign [class="Signal"] $ws5
+assign [class="Mattermost"] $ws5
 assign [class="Ekiga"] $ws5
-assign [class="Minitube"] $ws16
 assign [class="vlc"] $ws16
-#assign [class="Steam"] $ws16
+assign [class="Steam"] $ws17
 assign [title="ROFIOVPN"] $wsvpn
 
 # modes
