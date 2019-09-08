@@ -6,7 +6,8 @@ export BROWSER="icecat"
 
 if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
   setleds -D +num
-  startx -- :1 vt1 -nolisten tcp > /dev/null
+  #startx -- :1 vt1 -nolisten tcp > /dev/null
+  sway
 fi
 
 HISTSIZE=100000

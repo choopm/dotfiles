@@ -1,0 +1,420 @@
+# keymap
+input * {
+    xkb_layout de,de
+    xkb_options grp:alt_shift_toggle
+}
+# settings
+set $mod Mod4
+set $Alt Mod1
+set $mod2 Mod4+Control
+set $terminal urxvtc -pe tabbed
+set $terminal-floating urxvtc -pe tabbed -title !F!
+set $screensaver swaylock -c "#000000"
+set $rofi_param -threads 4 -m -4 -no-parse-known-hosts
+set $wallpaper /home/choopm/Dokumente/Wallpaper/eye.png
+set $status_command py3status -c ~/.config/sway/status-bottom.conf
+set $Mon_LVDS LVDS1
+set $Mon_Left HDMI3
+set $Mon_Right HDMI2
+floating_modifier $mod
+font pango:Liberation Sans 9
+workspace_auto_back_and_forth yes
+focus_follows_mouse yes
+mouse_warping output
+
+#workspaces
+set $ws1 "1: "
+set $ws2 "2: "
+set $ws3 "3: "
+set $ws4 "4: "
+set $ws5 "5: "
+set $ws6 "6: "
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 10
+set $ws11 11
+set $ws12 12
+set $ws13 13
+set $ws14 14
+set $ws15 15
+set $ws16 16
+set $ws16 "16: "
+set $ws17 17
+set $ws18 18
+set $ws19 19
+set $ws20 20
+set $ws21 21
+set $ws22 22
+set $wsvpn vpn
+#workspace $ws1 output $Mon_LVDS
+workspace $ws2 output $Mon_Left
+workspace $ws3 output $Mon_Right
+#workspace $ws4 output $Mon_LVDS
+workspace $ws5 output $Mon_LVDS
+workspace $ws16 output $Mon_Right
+
+# autoruns
+exec urxvtd -q -f -o
+exec mako
+output "*" bg $wallpaper fill
+
+# start / kill
+bindsym $mod+Return exec $terminal
+bindsym $mod+KP_Enter exec $terminal
+bindsym $mod+Control+Return exec $terminal-floating
+bindsym $mod+Control+KP_Enter exec $terminal-floating
+bindsym $mod+Shift+Return exec $terminal-floating
+bindsym $mod+Shift+KP_Enter exec $terminal-floating
+bindsym $mod+c kill
+
+# launchers
+bindsym $mod+r exec --no-startup-id rofi $rofi_param -show "combi"
+bindsym $mod+p exec --no-startup-id rofi-pass
+bindsym $mod+q exec --no-startup-id /home/choopm/.scripts/rofi_notes.sh
+bindsym --release Print exec --no-startup-id ~/.scripts/wayland-scrot.sh
+bindsym --release Shift+Print exec --no-startup-id ~/.scripts/wayland-scrot.sh slurp
+
+bindsym XF86AudioPlay exec --no-startup-id mpc --host 0pointer.org toggle
+bindsym XF86AudioNext exec --no-startup-id mpc --host 0pointer.org next; exec --no-startup-id killall -USR1 py3status
+bindsym XF86AudioPrev exec --no-startup-id mpc --host 0pointer.org prev; exec --no-startup-id killall -USR1 py3status
+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer --quiet set Master 5%-; exec --no-startup-id killall -USR1 py3status
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id amixer --quiet set Master 15%-; exec --no-startup-id killall -USR1 py3status
+bindsym $mod+Control+F4 exec --no-startup-id amixer --quiet set Master 5%-; exec --no-startup-id killall -USR1 py3status
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer --quiet set Master 5%+; exec --no-startup-id killall -USR1 py3status
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id amixer --quiet set Master 15%+; exec --no-startup-id killall -USR1 py3status
+bindsym $mod+Control+F5 exec --no-startup-id amixer --quiet set Master 5%+; exec --no-startup-id killall -USR1 py3status
+
+bindsym XF86AudioMute exec --no-startup-id amixer --quiet set Master toggle; exec --no-startup-id killall -USR1 py3status
+bindsym Shift+XF86AudioMute exec --no-startup-id amixer --quiet set Master 100%; exec --no-startup-id killall -USR1 py3status
+bindsym XF86AudioMicMute exec --no-startup-id amixer --quiet set Capture toggle
+
+bindsym XF86MonBrightnessUp           exec --no-startup-id brightnessctl set 10%+
+bindsym Control+F9                    exec --no-startup-id brightnessctl set 10%+
+bindsym $mod+XF86MonBrightnessUp      exec --no-startup-id brightnessctl set 100%
+bindsym $mod+Control+F9               exec --no-startup-id brightnessctl set 100%
+bindsym XF86MonBrightnessDown         exec --no-startup-id brightnessctl set 10%-
+bindsym Control+F8                    exec --no-startup-id brightnessctl set 10%-
+bindsym $mod+XF86MonBrightnessDown    exec --no-startup-id brightnessctl set 0%
+bindsym $mod+Control+F8               exec --no-startup-id brightnessctl set 0%
+
+bindsym XF86ScreenSaver exec --no-startup-id $screensaver
+bindsym $mod+Scroll_Lock exec --no-startup-id $screensaver
+bindsym XF86Display exec --no-startup-id /home/choopm/.scripts/togglebl.sh
+bindsym XF86Launch1 exec --no-startup-id icecat; exec --no-startup-id thunderbird; exec --no-startup-id pidgin; exec --no-startup-id quasselclient; exec --no-startup-id teamspeak3
+bindsym Scroll_Lock exec --no-startup-id icecat; exec --no-startup-id thunderbird; exec --no-startup-id pidgin; exec --no-startup-id quasselclient; exec --no-startup-id teamspeak3
+
+bindsym $mod+o exec --no-startup-id rofi $rofi_param -show "window"
+bindsym $mod+udiaeresis exec --no-startup-id /home/choopm/.scripts/rofi-monitor.sh
+bindsym $mod+Control+p exec --no-startup-id /home/choopm/.scripts/imgurup.sh
+bindsym $mod+Control+s exec --no-startup-id /home/choopm/.scripts/imgurdown.sh
+bindsym $mod+Control+v exec --no-startup-id /home/choopm/.scripts/rofi-vpn.sh
+bindsym $mod+Control+space exec --no-startup-id /home/choopm/.scripts/toggletouchpad.sh
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+bindsym $mod+u [urgent=latest] focus
+bindsym $mod+a focus parent
+bindsym $mod+d focus child
+bindsym $mod+Escape workspace back_and_forth
+bindsym $mod+Tab workspace back_and_forth
+
+# mark window
+bindsym $mod+Shift+m mode $mode_mark_window
+bindsym $mod+Shift+g mode $mode_goto_window
+bindsym $mod+Shift+comma mode $mode_goto_window
+bindsym $mod+Control+m exec i3-input -F 'mark %s' -P 'Mark as: '
+bindsym $mod+Control+g exec i3-input -F '[con_mark=%s] focus' -P 'Goto mark: '
+bindsym $mod+comma exec i3-input -F '[con_mark=%s] focus' -P 'Goto mark: '
+
+# rename workspace
+bindsym $mod+$Alt+n exec i3-input -F 'rename workspace to "%s"' -P 'Rename workspace to: '
+
+# rename window
+bindsym $mod+Control+n exec i3-input -F 'title_format "<b>[%s]</b>   %title"' -P 'Window [tag]: '
+
+# create new workspace
+bindsym $mod+g exec --no-startup-id rofi $rofi_param -show "Goto/Create workspace"
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+Left move left 100
+bindsym $mod+Shift+Down move down 100
+bindsym $mod+Shift+Up move up 100
+bindsym $mod+Shift+Right move right 100
+bindsym $mod+n move scratchpad
+bindsym $mod+Shift+n scratchpad show
+bindsym $mod+Shift+Escape move container to workspace back_and_forth; workspace back_and_forth
+bindsym $mod+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
+
+bindsym $mod+Control+Next move workspace to output right
+bindsym $mod+Control+Prior move workspace to output left
+
+bindsym $mod+Shift+Control+h move workspace to output left
+bindsym $mod+Shift+Control+l move workspace to output right
+bindsym $mod+Shift+Control+k move workspace to output up
+bindsym $mod+Shift+Control+j move workspace to output down
+bindsym $mod+Shift+Control+Left move workspace to output left
+bindsym $mod+Shift+Control+Right move workspace to output right
+bindsym $mod+Shift+Control+Up move workspace to output up
+bindsym $mod+Shift+Control+Down move workspace to output down
+
+bindsym $mod+Control+h focus output left
+bindsym $mod+Control+l focus output right
+bindsym $mod+Control+k focus output up
+bindsym $mod+Control+j focus output down
+bindsym $mod+Control+Left focus output left
+bindsym $mod+Control+Right focus output right
+bindsym $mod+Control+Up focus output up
+bindsym $mod+Control+Down focus output down
+
+# next splits
+bindsym $mod+z split h
+bindsym $mod+v split v
+
+# layouts
+bindsym $mod+f fullscreen
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# floating
+bindsym $mod+space floating toggle
+bindsym $Alt+Escape focus mode_toggle
+bindsym $Alt+Tab focus mode_toggle
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+bindsym $mod+KP_1 workspace $ws1
+bindsym $mod+KP_2 workspace $ws2
+bindsym $mod+KP_3 workspace $ws3
+bindsym $mod+KP_4 workspace $ws4
+bindsym $mod+KP_5 workspace $ws5
+bindsym $mod+KP_6 workspace $ws6
+bindsym $mod+KP_7 workspace $ws7
+bindsym $mod+KP_8 workspace $ws8
+bindsym $mod+KP_9 workspace $ws9
+bindsym $mod+KP_0 workspace $ws10
+
+bindsym $mod+F1 workspace $ws11
+bindsym $mod+F2 workspace $ws12
+bindsym $mod+F3 workspace $ws13
+bindsym $mod+F4 workspace $ws14
+bindsym $mod+F5 workspace $ws15
+bindsym $mod+F6 workspace $ws16
+bindsym $mod+F7 workspace $ws17
+bindsym $mod+F8 workspace $ws18
+bindsym $mod+F9 workspace $ws19
+bindsym $mod+F10 workspace $ws20
+bindsym $mod+F11 workspace $ws21
+bindsym $mod+F12 workspace $ws22
+
+bindsym $mod+Next workspace next
+bindsym $mod+Prior workspace prev
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+bindsym $mod+Shift+KP_1 move container to workspace $ws1
+bindsym $mod+Shift+KP_2 move container to workspace $ws2
+bindsym $mod+Shift+KP_3 move container to workspace $ws3
+bindsym $mod+Shift+KP_4 move container to workspace $ws4
+bindsym $mod+Shift+KP_5 move container to workspace $ws5
+bindsym $mod+Shift+KP_6 move container to workspace $ws6
+bindsym $mod+Shift+KP_7 move container to workspace $ws7
+bindsym $mod+Shift+KP_8 move container to workspace $ws8
+bindsym $mod+Shift+KP_9 move container to workspace $ws9
+bindsym $mod+Shift+KP_0 move container to workspace $ws10
+
+bindsym $mod+Shift+F1 move container to workspace $ws11
+bindsym $mod+Shift+F2 move container to workspace $ws12
+bindsym $mod+Shift+F3 move container to workspace $ws13
+bindsym $mod+Shift+F4 move container to workspace $ws14
+bindsym $mod+Shift+F5 move container to workspace $ws15
+bindsym $mod+Shift+F6 move container to workspace $ws16
+bindsym $mod+Shift+F7 move container to workspace $ws17
+bindsym $mod+Shift+F8 move container to workspace $ws18
+bindsym $mod+Shift+F9 move container to workspace $ws19
+bindsym $mod+Shift+F10 move container to workspace $ws20
+bindsym $mod+Shift+Next move container to workspace next; workspace next
+bindsym $mod+Shift+Prior move container to workspace prev; workspace prev
+
+# sway commands
+bindsym $mod+Shift+r reload
+bindsym $mod+Control+r reload
+
+bindsym $mod+b border toggle
+# rules
+#for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border normal
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="page-info"] floating enable
+for_window [title="Preferences$"] floating enable
+for_window [window_role="^.*Options"] floating enable
+for_window [title="^.*!F!.*"] floating enable
+for_window [window_role="Preferences$"] floating enable
+for_window [window_role="PasswordManager$"] floating enable
+for_window [title="Pylote"] fullscreen
+for_window [class="Galculator"] floating enable
+for_window [class="feh"] floating enable
+for_window [class="Gpicview"] floating enable
+for_window [class="ReLoad"] floating enable
+for_window [title="^.* - Oracle VM VirtualBox"] floating enable
+for_window [class="Keepassx"] floating enable
+for_window [class="Wine"] floating enable
+for_window [class="Pdfpc"] floating enable
+for_window [class="Arandr"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="qemu-system-x86_64"] floating enable
+for_window [class="^Yubico Authenticator$"] floating enable
+#for_window [class="TeamViewer"] floating enable
+#for_window [window_role="buddy_list"] floating disable, layout stacking, move left
+#for_window [window_role="conversation"] floating disable, move right, move left, move right, resize grow width 31px or 31 ppt
+#for_window [class="Gimp-2.8"] floating disable; move right; layout stacking
+#for_window [window_role="gimp-toolbox"] floating disable; move left; layout split
+
+assign [class="Firefox"] $ws2
+assign [class="IceCat"] $ws2
+assign [class="Google-chrome-stable"] $ws2
+assign [class="Thunderbird"] $ws3
+#assign [class="Java"] $ws4
+assign [class="kdevelop"] $ws4
+assign [class="Eclipse"] $ws4
+assign [title="^Eclipse"] $ws4
+assign [class="^NetBeans IDE"] $ws4
+assign [class="TeamSpeak 3"] $ws5
+assign [window_role="buddy_list"] $ws5
+assign [window_role="conversation"] $ws5
+assign [class="Ekiga"] $ws5
+assign [class="Minitube"] $ws16
+assign [class="vlc"] $ws16
+#assign [class="Steam"] $ws16
+assign [title="ROFIOVPN"] $wsvpn
+
+# modes
+set $mode_pass_through pass-through
+mode "pass-through" {
+	bindsym $mod+BackSpace mode "default"
+}
+bindsym $mod+BackSpace mode "$mode_pass_through"
+
+set $mode_system System (l)ock, (e)xit, (s)uspend, (r)eboot, (p)oweroff
+mode "$mode_system" {
+    bindsym l exec $screensaver, mode "default"
+    bindsym e exit, mode "default"
+    bindsym s exec systemctl suspend, mode "default"
+    bindsym r exec systemctl reboot, mode "default"
+    bindsym p exec systemctl poweroff, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+q mode "$mode_system"
+
+set $mode_resize Resize Window
+mode "$mode_resize" {
+	bindsym h resize shrink width 1 px or 1 ppt
+	bindsym j resize grow height 1 px or 1 ppt
+	bindsym k resize shrink height 1 px or 1 ppt
+	bindsym l resize grow width 1 px or 1 ppt
+	bindsym Left resize shrink width 1 px or 1 ppt
+	bindsym Down resize grow height 1 px or 1 ppt
+	bindsym Up resize shrink height 1 px or 1 ppt
+	bindsym Right resize grow width 1 px or 1 ppt
+
+	bindsym Shift+h resize shrink width 10 px or 10 ppt
+	bindsym Shift+j resize grow height 10 px or 10 ppt
+	bindsym Shift+k resize shrink height 10 px or 10 ppt
+	bindsym Shift+l resize grow width 10 px or 10 ppt
+	bindsym Shift+Left resize shrink width 10 px or 10 ppt
+	bindsym Shift+Down resize grow height 10 px or 10 ppt
+	bindsym Shift+Up resize shrink height 10 px or 10 ppt
+	bindsym Shift+Right resize grow width 10 px or 10 ppt
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+bindsym $mod+x mode "$mode_resize"
+
+set $mode_mark_window Mark as [0-9]
+mode "$mode_mark_window" {
+	bindsym 1 mark m1, mode "default"
+	bindsym 2 mark m2, mode "default"
+	bindsym 3 mark m3, mode "default"
+	bindsym 4 mark m4, mode "default"
+	bindsym 5 mark m5, mode "default"
+	bindsym 6 mark m6, mode "default"
+	bindsym 7 mark m7, mode "default"
+	bindsym 8 mark m8, mode "default"
+	bindsym 9 mark m9, mode "default"
+	bindsym 0 mark m0, mode "default"
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+set $mode_goto_window Goto mark [0-9]
+mode "$mode_goto_window" {
+	bindsym 1 [con_mark="m1"] focus, mode "default"
+	bindsym 2 [con_mark="m2"] focus, mode "default"
+	bindsym 3 [con_mark="m3"] focus, mode "default"
+	bindsym 4 [con_mark="m4"] focus, mode "default"
+	bindsym 5 [con_mark="m5"] focus, mode "default"
+	bindsym 6 [con_mark="m6"] focus, mode "default"
+	bindsym 7 [con_mark="m7"] focus, mode "default"
+	bindsym 8 [con_mark="m8"] focus, mode "default"
+	bindsym 9 [con_mark="m9"] focus, mode "default"
+	bindsym 0 [con_mark="m0"] focus, mode "default"
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+# bars
+bindsym $mod+Control+b bar mode toggle bottombar
+bindsym $mod bar hidden_state toggle bottombar
+
+bar {
+	id bottombar
+	position bottom
+	#mode hide
+	hidden_state hide
+	modifier $mod
+	workspace_buttons yes
+	binding_mode_indicator yes
+	strip_workspace_numbers no
+	tray_output primary
+	status_command $status_command
+}
