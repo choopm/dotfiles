@@ -33,6 +33,8 @@ URxvt.tabbed.tabbar-bg: 0
 URxvt.tabbed.tab-fg:    0
 URxvt.tabbed.tab-bg:    39
 URxvt.iso14755:         False
+! Disable printing the terminal contents when pressing PrintScreen.
+URxvt.print-pipe: "cat > /dev/null"
 
 !Xft
 Xft.autohint: 0

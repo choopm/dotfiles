@@ -9,7 +9,7 @@ set $Alt Mod1
 set $mod2 Mod4+Control
 set $terminal urxvtc -pe tabbed
 set $terminal-floating urxvtc -pe tabbed -title !F!
-set $screensaver grim /tmp/.lockbg && convert -blur 0x4 /tmp/.lockbg /tmp/.lockbg && swaylock -c "#000000" -i /tmp/.lockbg && rm /tmp/.lockbg
+set $screensaver swaylock -i $wallpaper
 set $rofi_param -threads 4 -m -4 -no-parse-known-hosts
 set $wallpaper /home/choopm/Dokumente/Wallpaper/eye.png
 set $status_command py3status -c ~/.config/sway/status-bottom.conf
@@ -307,6 +307,7 @@ assign [class="Google-chrome-stable"] $ws2
 assign [class="Thunderbird"] $ws3
 #assign [class="Java"] $ws4
 assign [class="kdevelop"] $ws4
+assign [title=".*Code - OSS$"] $ws4
 assign [class="Eclipse"] $ws4
 assign [title="^Eclipse"] $ws4
 assign [class="^NetBeans IDE"] $ws4

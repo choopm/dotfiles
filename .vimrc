@@ -27,7 +27,7 @@ Plugin 'scrooloose/nerdtree'
 map <F5> :NERDTreeToggle<CR>
 map <Leader>l :NERDTreeToggle<CR>
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd VimEnter * if argc() != 0 | NERDTreeFind | wincmd l | endif
+"autocmd VimEnter * if argc() != 0 | NERDTreeFind | wincmd l | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=45
 let NERDTreeShowHidden=1
