@@ -59,6 +59,11 @@ exec urxvtd -q -f -o
 exec mako
 output "*" bg $wallpaper fill
 
+# monitor config at work
+output "Unknown HP 24o CNK7061KW8" transform 270 pos 0,0
+output "Unknown HP 24o CNK71002CY" pos 1080,440
+#output "Unknown 0x573D 0x00000000" pos 3000,440 # not needed, sway auto-adjusts pos-y of right-placed monitors
+
 # start / kill
 bindsym $mod+Return exec $terminal
 bindsym $mod+KP_Enter exec $terminal
