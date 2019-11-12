@@ -3,6 +3,8 @@
 export PRINTER="ifAsec_GmbH_Kyocera_ECOSYS_P6021cdn"
 export TERM="rxvt-256color"
 export BROWSER="icecat"
+export GOPATH="/home/choopm/go"
+export PATH="$PATH:$GOPATH/bin"
 
 if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
   setleds -D +num
