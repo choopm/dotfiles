@@ -77,49 +77,49 @@ bindsym $mod+Shift+KP_Enter exec $terminal-floating
 bindsym $mod+c kill
 
 # launchers
-bindsym $mod+r exec --no-startup-id rofi $rofi_param -show "combi"
-bindsym $mod+p exec --no-startup-id rofi-pass
-bindsym $mod+q exec --no-startup-id /home/choopm/.scripts/rofi_notes.sh
-bindsym --release Print exec --no-startup-id ~/.scripts/wayland-scrot.sh
-bindsym --release Shift+Print exec --no-startup-id ~/.scripts/wayland-scrot.sh slurp
+bindsym $mod+r exec rofi $rofi_param -show "combi"
+bindsym $mod+p exec rofi-pass
+bindsym $mod+q exec /home/choopm/.scripts/rofi_notes.sh
+bindsym --release Print exec ~/.scripts/wayland-scrot.sh
+bindsym --release Shift+Print exec ~/.scripts/wayland-scrot.sh slurp
 
-bindsym XF86AudioPlay exec --no-startup-id mpc --host 0pointer.org toggle
-bindsym XF86AudioNext exec --no-startup-id mpc --host 0pointer.org next; exec --no-startup-id killall -USR1 py3status
-bindsym XF86AudioPrev exec --no-startup-id mpc --host 0pointer.org prev; exec --no-startup-id killall -USR1 py3status
+bindsym XF86AudioPlay exec mpc --host 0pointer.org toggle
+bindsym XF86AudioNext exec mpc --host 0pointer.org next; exec killall -USR1 py3status
+bindsym XF86AudioPrev exec mpc --host 0pointer.org prev; exec killall -USR1 py3status
 
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer --quiet set Master 5%-; exec --no-startup-id killall -USR1 py3status
-bindsym Shift+XF86AudioLowerVolume exec --no-startup-id amixer --quiet set Master 15%-; exec --no-startup-id killall -USR1 py3status
-bindsym $mod+Control+F4 exec --no-startup-id amixer --quiet set Master 5%-; exec --no-startup-id killall -USR1 py3status
+bindsym XF86AudioLowerVolume exec amixer --quiet set Master 5%-; exec killall -USR1 py3status
+bindsym Shift+XF86AudioLowerVolume exec amixer --quiet set Master 15%-; exec killall -USR1 py3status
+bindsym $mod+Control+F4 exec amixer --quiet set Master 5%-; exec killall -USR1 py3status
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer --quiet set Master 5%+; exec --no-startup-id killall -USR1 py3status
-bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id amixer --quiet set Master 15%+; exec --no-startup-id killall -USR1 py3status
-bindsym $mod+Control+F5 exec --no-startup-id amixer --quiet set Master 5%+; exec --no-startup-id killall -USR1 py3status
+bindsym XF86AudioRaiseVolume exec amixer --quiet set Master 5%+; exec killall -USR1 py3status
+bindsym Shift+XF86AudioRaiseVolume exec amixer --quiet set Master 15%+; exec killall -USR1 py3status
+bindsym $mod+Control+F5 exec amixer --quiet set Master 5%+; exec killall -USR1 py3status
 
-bindsym XF86AudioMute exec --no-startup-id amixer --quiet set Master toggle; exec --no-startup-id killall -USR1 py3status
-bindsym Shift+XF86AudioMute exec --no-startup-id amixer --quiet set Master 100%; exec --no-startup-id killall -USR1 py3status
-bindsym XF86AudioMicMute exec --no-startup-id amixer --quiet set Capture toggle
+bindsym XF86AudioMute exec amixer --quiet set Master toggle; exec killall -USR1 py3status
+bindsym Shift+XF86AudioMute exec amixer --quiet set Master 100%; exec killall -USR1 py3status
+bindsym XF86AudioMicMute exec amixer --quiet set Capture toggle
 
-bindsym XF86MonBrightnessUp           exec --no-startup-id brightnessctl set 10%+
-bindsym Control+F9                    exec --no-startup-id brightnessctl set 10%+
-bindsym $mod+XF86MonBrightnessUp      exec --no-startup-id brightnessctl set 100%
-bindsym $mod+Control+F9               exec --no-startup-id brightnessctl set 100%
-bindsym XF86MonBrightnessDown         exec --no-startup-id brightnessctl set 10%-
-bindsym Control+F8                    exec --no-startup-id brightnessctl set 10%-
-bindsym $mod+XF86MonBrightnessDown    exec --no-startup-id brightnessctl set 0%
-bindsym $mod+Control+F8               exec --no-startup-id brightnessctl set 0%
+bindsym XF86MonBrightnessUp           exec brightnessctl set 10%+
+bindsym Control+F9                    exec brightnessctl set 10%+
+bindsym $mod+XF86MonBrightnessUp      exec brightnessctl set 100%
+bindsym $mod+Control+F9               exec brightnessctl set 100%
+bindsym XF86MonBrightnessDown         exec brightnessctl set 10%-
+bindsym Control+F8                    exec brightnessctl set 10%-
+bindsym $mod+XF86MonBrightnessDown    exec brightnessctl set 0%
+bindsym $mod+Control+F8               exec brightnessctl set 0%
 
-bindsym XF86ScreenSaver exec --no-startup-id $screensaver
-bindsym $mod+Scroll_Lock exec --no-startup-id $screensaver
-bindsym XF86Display exec --no-startup-id /home/choopm/.scripts/togglebl.sh
-bindsym XF86Launch1 exec --no-startup-id icecat; exec --no-startup-id thunderbird; exec --no-startup-id pidgin; exec --no-startup-id quasselclient; exec --no-startup-id teamspeak3
-bindsym Scroll_Lock exec --no-startup-id icecat; exec --no-startup-id thunderbird; exec --no-startup-id pidgin; exec --no-startup-id quasselclient; exec --no-startup-id teamspeak3
+bindsym XF86ScreenSaver exec $screensaver
+bindsym $mod+Scroll_Lock exec $screensaver
+bindsym XF86Display exec /home/choopm/.scripts/togglebl.sh
+bindsym XF86Launch1 exec icecat; exec thunderbird; exec pidgin; exec quasselclient; exec teamspeak3
+bindsym Scroll_Lock exec icecat; exec thunderbird; exec pidgin; exec quasselclient; exec teamspeak3
 
-bindsym $mod+o exec --no-startup-id rofi $rofi_param -show "window"
-bindsym $mod+udiaeresis exec --no-startup-id /home/choopm/.scripts/rofi-monitor.sh
-bindsym $mod+Control+p exec --no-startup-id /home/choopm/.scripts/imgurup.sh
-bindsym $mod+Control+s exec --no-startup-id /home/choopm/.scripts/imgurdown.sh
-bindsym $mod+Control+v exec --no-startup-id /home/choopm/.scripts/rofi-vpn.sh
-bindsym $mod+Control+space exec --no-startup-id /home/choopm/.scripts/toggletouchpad.sh
+bindsym $mod+o exec rofi $rofi_param -show "window"
+bindsym $mod+udiaeresis exec /home/choopm/.scripts/rofi-monitor.sh
+bindsym $mod+Control+p exec /home/choopm/.scripts/imgurup.sh
+bindsym $mod+Control+s exec /home/choopm/.scripts/imgurdown.sh
+bindsym $mod+Control+v exec /home/choopm/.scripts/rofi-vpn.sh
+bindsym $mod+Control+space exec /home/choopm/.scripts/toggletouchpad.sh
 
 # change focus
 bindsym $mod+h focus left
