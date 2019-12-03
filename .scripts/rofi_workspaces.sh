@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ -z "$@" ]; then
-    echo "$(i3-msg -t get_workspaces | tr ',' '\n' | grep "name" | sed 's/"name":"\(.*\)"/\1/g' | sort -n)"
+  echo "$(swaymsg -t get_workspaces | jq -M '.[] | .name' | sort -n)"
 else
-    if [ -n "$@" ]; then
-        i3-msg workspace "$@" >/dev/null
-    fi
+  if [ -n "$@" ]; then
+    swaymsg workspace "$@" >/dev/null
+  fi
 fi
