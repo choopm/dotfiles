@@ -114,7 +114,7 @@ bindsym XF86Display exec /home/choopm/.scripts/togglebl.sh
 bindsym XF86Launch1 exec icecat; exec thunderbird; exec pidgin; exec quasselclient; exec teamspeak3
 bindsym Scroll_Lock exec icecat; exec thunderbird; exec pidgin; exec quasselclient; exec teamspeak3
 
-bindsym $mod+o exec rofi $rofi_param -show "window"
+bindsym $mod+o exec rofi $rofi_param -show "Goto/Create workspace"
 bindsym $mod+udiaeresis exec /home/choopm/.scripts/rofi-monitor.sh
 bindsym $mod+Control+p exec /home/choopm/.scripts/imgurup.sh
 bindsym $mod+Control+s exec /home/choopm/.scripts/imgurdown.sh
@@ -149,9 +149,6 @@ bindsym $mod+$Alt+n exec i3-input -F 'rename workspace to "%s"' -P 'Rename works
 
 # rename window
 bindsym $mod+Control+n exec i3-input -F 'title_format "<b>[%s]</b>   %title"' -P 'Window [tag]: '
-
-# create new workspace
-bindsym $mod+g exec --no-startup-id rofi $rofi_param -show "Goto/Create workspace"
 
 # move focused window
 bindsym $mod+Shift+h move left
