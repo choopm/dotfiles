@@ -2,6 +2,11 @@
 input * {
     xkb_layout de,de
     xkb_options grp:alt_shift_toggle
+    tap enabled
+    natural_scroll disabled
+}
+input 1133:49970:Logitech_Gaming_Mouse_G502 {
+    pointer_accel 1
 }
 # settings
 set $mod Mod4
@@ -45,7 +50,7 @@ set $ws18 18
 set $ws19 19
 set $ws20 20
 set $ws21 21
-set $ws22 22
+set $ws22 "22: "
 set $wsvpn vpn
 #workspace $ws1 output $Mon_LVDS
 workspace $ws2 output $Mon_Left
@@ -65,7 +70,7 @@ output "Unknown HP 24o CNK71002CY" pos 1080,440
 # LVDS
 output "Unknown 0x573D 0x00000000" pos 3000,440
 # monitor config at home
-output "Unknown ZOWIE XL LCD EAG01008SL0" pos 4920,440
+output "BenQ Corporation ZOWIE XL LCD EAG01008SL0" pos 1080,440
 
 # start / kill
 bindsym $mod+Return exec $terminal
@@ -322,6 +327,7 @@ assign [window_role="conversation"] $ws5
 assign [class="Signal"] $ws5
 assign [class="Mattermost"] $ws5
 assign [class="Ekiga"] $ws5
+assign [class="Microsoft Teams"] $ws5
 assign [class="vlc"] $ws16
 assign [class="Steam"] $ws17
 assign [title="ROFIOVPN"] $wsvpn

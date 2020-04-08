@@ -13,7 +13,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Plugin Ctrl+p (MRU, files, buffers)
 Plugin 'kien/ctrlp.vim'
-map <Leader>p :CtrlPMixed<CR>
+" map <Leader>p :CtrlPMixed<CR>
+map <Leader>p :CtrlPMRUFiles<CR>
 map <Leader>o :CtrlPBuffer<CR>
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
@@ -79,7 +80,7 @@ filetype plugin indent on
 " General stuff
 set nowrap
 set autoindent
-set shiftwidth=2
+set shiftwidth=4
 set expandtab
 set tabstop=2
 set softtabstop=2

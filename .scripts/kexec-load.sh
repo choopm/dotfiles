@@ -4,14 +4,14 @@ LINUX="${1:-linux}"
 INITRAMFS="/boot/initramfs-$LINUX.img"
 KERNEL="/boot/vmlinuz-$LINUX"
 LUKS="root"
-KEYFILE="/home/choopm/Dokumente/KEY/kexec-luks.key"
+KEYFILE="/home/choopm/Dokumente/KEY/kexec-luks-small.key"
 
 umask 0077
 CRYPTROOT_TMPDIR="$(mktemp -d --tmpdir=/dev/shm)"
 INITRD="${CRYPTROOT_TMPDIR}/initramfs.img"
 ROOTFS="$CRYPTROOT_TMPDIR/rootfs"
-FILENAME="crypto_keyfile.bin"
-CMDLINE=$(echo "$(cat /proc/cmdline | sed 's/cryptkey[^ ]*//') cryptkey=rootfs:/${FILENAME}")
+FILENAME="etc/crypto_keyfile.bin"
+CMDLINE="$(cat /proc/cmdline)"
 KVERSION=$(file $KERNEL | sed -r 's/.*version ([^ ]*).*/\1/')
 mkdir -p $ROOTFS
 
@@ -26,6 +26,7 @@ cd "${ROOTFS}"
 cat "${INITRAMFS}" | gzip -cd | cpio --quiet -i
 
 cp $KEYFILE $FILENAME
+sed -i 's/pkcs11-uri=[^, ]*//' etc/crypttab
 
 find . | cpio --quiet -H newc -o | gzip >> "$INITRD"
 
