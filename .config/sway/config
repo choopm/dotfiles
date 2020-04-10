@@ -16,7 +16,7 @@ set $terminal urxvtc -pe tabbed
 set $terminal-floating urxvtc -pe tabbed -title !F!
 set $screensaver swaylock -i $wallpaper
 set $rofi_param -threads 4 -m -4 -no-parse-known-hosts
-set $wallpaper /home/choopm/Dokumente/Wallpaper/eye.png
+set $wallpaper /home/choopm/Syncthing/Bilder/Wallpaper/eye.png
 set $status_command py3status -c ~/.config/sway/status-bottom.conf
 set $Mon_LVDS LVDS1
 set $Mon_Left HDMI3

@@ -1,6 +1,6 @@
 #!/bin/sh
 DATE=$(date +"%Y-%m-%d-%H%M%S")
-FILE=~/Dokumente/screenshots/$DATE.png
+FILE=~/Syncthing/Bilder/Screenshots/$DATE.png
 
 if [ "$1" = "slurp" ]; then
   grim -g "$(slurp)" $FILE
