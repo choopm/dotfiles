@@ -4,7 +4,7 @@ LINUX="${1:-linux}"
 INITRAMFS="/boot/initramfs-$LINUX.img"
 KERNEL="/boot/vmlinuz-$LINUX"
 LUKS="root"
-KEYFILE="/home/choopm/Syncthing/KEY/kexec-luks-small.key"
+KEYFILE="/home/choopm/Syncthing/Keys/kexec-luks-small.key"
 
 umask 0077
 CRYPTROOT_TMPDIR="$(mktemp -d --tmpdir=/dev/shm)"
