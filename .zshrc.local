@@ -1,7 +1,7 @@
 #  vim: set ts=2 sw=2 tw=0 et :
 
 export PRINTER="ifAsec_GmbH_Kyocera_ECOSYS_P6021cdn"
-export TERM="rxvt-256color"
+#export TERM="rxvt-256color"
 export BROWSER="icecat"
 export GOPATH="/home/choopm/go"
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -9,7 +9,6 @@ export JAVA_HOME=/usr/lib/jvm/default
 export PATH="$PATH:$JAVA_HOME:$GOPATH/bin:/home/choopm/.scripts"
 
 if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
-  setleds -D +num
   #startx -- :1 vt1 -nolisten tcp > /dev/null
   sway
 fi

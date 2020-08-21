@@ -1,26 +1,37 @@
 # keymap
 input * {
-    xkb_layout de,de
-    xkb_options grp:alt_shift_toggle
+    xkb_layout "de"
+    xkb_options ""
+    xkb_variant "neo"
     tap enabled
     natural_scroll disabled
 }
 input 1133:49970:Logitech_Gaming_Mouse_G502 {
     pointer_accel 1
 }
+
+set $Mon_LVDS Unknown 0x573D 0x00000000
+bindswitch --reload --locked lid:on output $Mon_LVDS disable
+bindswitch --reload --locked lid:off output $Mon_LVDS enable
+
+# monitor config at work
+#output "Unknown HP 24o CNK7061KW8" transform 270 pos 0,0
+#output "Unknown HP 24o CNK71002CY" pos 1080,440
+# LVDS
+output "Unknown 0x573D 0x00000000" pos 0,0
+# monitor config at home office
+output "BenQ Corporation ZOWIE XL LCD EAG01008SL0" pos 1920,0
+
 # settings
 set $mod Mod4
 set $Alt Mod1
 set $mod2 Mod4+Control
-set $terminal urxvtc -pe tabbed
-set $terminal-floating urxvtc -pe tabbed -title !F!
+set $terminal termite
+set $terminal-floating termite --title !F!
 set $screensaver swaylock -i $wallpaper
 set $rofi_param -threads 4 -m -4 -no-parse-known-hosts
 set $wallpaper /home/choopm/Syncthing/Bilder/Wallpaper/eye.png
 set $status_command py3status -c ~/.config/sway/status-bottom.conf
-set $Mon_LVDS LVDS1
-set $Mon_Left HDMI3
-set $Mon_Right HDMI2
 floating_modifier $mod
 font pango:Liberation Sans 9
 workspace_auto_back_and_forth yes
@@ -52,25 +63,10 @@ set $ws20 20
 set $ws21 21
 set $ws22 "22: "
 set $wsvpn vpn
-#workspace $ws1 output $Mon_LVDS
-workspace $ws2 output $Mon_Left
-workspace $ws3 output $Mon_Right
-#workspace $ws4 output $Mon_LVDS
-workspace $ws5 output $Mon_LVDS
-workspace $ws16 output $Mon_Right
 
 # autoruns
-exec urxvtd -q -f -o
 exec mako
 output "*" bg $wallpaper fill
-
-# monitor config at work
-output "Unknown HP 24o CNK7061KW8" transform 270 pos 0,0
-output "Unknown HP 24o CNK71002CY" pos 1080,440
-# LVDS
-output "Unknown 0x573D 0x00000000" pos 3000,440
-# monitor config at home
-output "BenQ Corporation ZOWIE XL LCD EAG01008SL0" pos 1080,440
 
 # start / kill
 bindsym $mod+Return exec $terminal
@@ -79,12 +75,12 @@ bindsym $mod+Control+Return exec $terminal-floating
 bindsym $mod+Control+KP_Enter exec $terminal-floating
 bindsym $mod+Shift+Return exec $terminal-floating
 bindsym $mod+Shift+KP_Enter exec $terminal-floating
-bindsym $mod+c kill
+bindsym $mod+adiaeresis kill
 
 # launchers
-bindsym $mod+r exec rofi $rofi_param -show "combi"
-bindsym $mod+p exec rofi-pass
-bindsym $mod+q exec /home/choopm/.scripts/rofi_notes.sh
+bindsym $mod+c exec rofi $rofi_param -show "combi"
+bindsym $mod+q exec rofi-pass
+bindsym $mod+x exec /home/choopm/.scripts/rofi_notes.sh
 bindsym --release Print exec ~/.scripts/wayland-scrot.sh
 bindsym --release Shift+Print exec ~/.scripts/wayland-scrot.sh slurp
 
@@ -120,85 +116,85 @@ bindsym XF86Launch1 exec icecat; exec thunderbird; exec pidgin; exec quasselclie
 bindsym Scroll_Lock exec icecat; exec thunderbird; exec pidgin; exec quasselclient; exec teamspeak3
 
 bindsym $mod+o exec rofi $rofi_param -show "Goto/Create workspace"
-bindsym $mod+udiaeresis exec /home/choopm/.scripts/rofi-monitor.sh
-bindsym $mod+Control+p exec /home/choopm/.scripts/imgurup.sh
-bindsym $mod+Control+s exec /home/choopm/.scripts/imgurdown.sh
-bindsym $mod+Control+v exec /home/choopm/.scripts/rofi-vpn.sh
+bindsym $mod+ssharp exec /home/choopm/.scripts/rofi-monitor.sh
+bindsym $mod+Control+q exec /home/choopm/.scripts/imgurup.sh
+bindsym $mod+Control+i exec /home/choopm/.scripts/imgurdown.sh
+bindsym $mod+Control+p exec /home/choopm/.scripts/rofi-vpn.sh
 bindsym $mod+Control+space exec /home/choopm/.scripts/toggletouchpad.sh
 
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym $mod+s focus left
+bindsym $mod+n focus down
+bindsym $mod+r focus up
+bindsym $mod+t focus right
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
-bindsym $mod+u [urgent=latest] focus
-bindsym $mod+a focus parent
-bindsym $mod+d focus child
+bindsym $mod+h [urgent=latest] focus
+bindsym $mod+u focus parent
+bindsym $mod+a focus child
 bindsym $mod+Escape workspace back_and_forth
 bindsym $mod+Tab workspace back_and_forth
 
 # mark window
 bindsym $mod+Shift+m mode $mode_mark_window
-bindsym $mod+Shift+g mode $mode_goto_window
+bindsym $mod+Shift+o mode $mode_goto_window
 bindsym $mod+Shift+comma mode $mode_goto_window
 bindsym $mod+Control+m exec i3-input -F 'mark %s' -P 'Mark as: '
-bindsym $mod+Control+g exec i3-input -F '[con_mark=%s] focus' -P 'Goto mark: '
+bindsym $mod+Control+o exec i3-input -F '[con_mark=%s] focus' -P 'Goto mark: '
 bindsym $mod+comma exec i3-input -F '[con_mark=%s] focus' -P 'Goto mark: '
 
 # rename workspace
-bindsym $mod+$Alt+n exec i3-input -F 'rename workspace to "%s"' -P 'Rename workspace to: '
+bindsym $mod+$Alt+b exec i3-input -F 'rename workspace to "%s"' -P 'Rename workspace to: '
 
 # rename window
-bindsym $mod+Control+n exec i3-input -F 'title_format "<b>[%s]</b>   %title"' -P 'Window [tag]: '
+bindsym $mod+Control+b exec i3-input -F 'title_format "<b>[%s]</b>   %title"' -P 'Window [tag]: '
 
 # move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+Shift+s move left
+bindsym $mod+Shift+n move down
+bindsym $mod+Shift+r move up
+bindsym $mod+Shift+t move right
 bindsym $mod+Shift+Left move left 100
 bindsym $mod+Shift+Down move down 100
 bindsym $mod+Shift+Up move up 100
 bindsym $mod+Shift+Right move right 100
-bindsym $mod+n move scratchpad
-bindsym $mod+Shift+n scratchpad show
+bindsym $mod+b move scratchpad
+bindsym $mod+Shift+b scratchpad show
 bindsym $mod+Shift+Escape move container to workspace back_and_forth; workspace back_and_forth
 bindsym $mod+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
 
 bindsym $mod+Control+Next move workspace to output right
 bindsym $mod+Control+Prior move workspace to output left
 
-bindsym $mod+Shift+Control+h move workspace to output left
-bindsym $mod+Shift+Control+l move workspace to output right
-bindsym $mod+Shift+Control+k move workspace to output up
-bindsym $mod+Shift+Control+j move workspace to output down
+bindsym $mod+Shift+Control+s move workspace to output left
+bindsym $mod+Shift+Control+n move workspace to output down
+bindsym $mod+Shift+Control+r move workspace to output up
+bindsym $mod+Shift+Control+t move workspace to output right
 bindsym $mod+Shift+Control+Left move workspace to output left
 bindsym $mod+Shift+Control+Right move workspace to output right
 bindsym $mod+Shift+Control+Up move workspace to output up
 bindsym $mod+Shift+Control+Down move workspace to output down
 
-bindsym $mod+Control+h focus output left
-bindsym $mod+Control+l focus output right
-bindsym $mod+Control+k focus output up
-bindsym $mod+Control+j focus output down
+bindsym $mod+Control+s focus output left
+bindsym $mod+Control+n focus output down
+bindsym $mod+Control+r focus output up
+bindsym $mod+Control+t focus output right
 bindsym $mod+Control+Left focus output left
-bindsym $mod+Control+Right focus output right
-bindsym $mod+Control+Up focus output up
 bindsym $mod+Control+Down focus output down
+bindsym $mod+Control+Up focus output up
+bindsym $mod+Control+Right focus output right
 
 # next splits
-bindsym $mod+z split h
-bindsym $mod+v split v
+bindsym $mod+k split h
+bindsym $mod+p split v
 
 # layouts
-bindsym $mod+f fullscreen
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+e fullscreen
+bindsym $mod+i layout stacking
+bindsym $mod+v layout tabbed
+bindsym $mod+l layout toggle split
 
 # floating
 bindsym $mod+space floating toggle
@@ -281,10 +277,10 @@ bindsym $mod+Shift+Next move container to workspace next; workspace next
 bindsym $mod+Shift+Prior move container to workspace prev; workspace prev
 
 # sway commands
-bindsym $mod+Shift+r reload
-bindsym $mod+Control+r reload
+bindsym $mod+Shift+c reload
+bindsym $mod+Control+c reload
 
-bindsym $mod+b border toggle
+bindsym $mod+z border toggle
 # rules
 #for_window [class="^.*"] border pixel 1
 for_window [class="^.*"] border normal
@@ -341,32 +337,32 @@ bindsym $mod+BackSpace mode "$mode_pass_through"
 
 set $mode_system System (l)ock, (e)xit, (s)uspend, (r)eboot, (p)oweroff
 mode "$mode_system" {
-    bindsym l exec $screensaver, mode "default"
-    bindsym e exit, mode "default"
-    bindsym s exec systemctl suspend, mode "default"
-    bindsym r exec systemctl reboot, mode "default"
-    bindsym p exec systemctl poweroff, mode "default"
+    bindsym t exec $screensaver, mode "default"
+    bindsym l exit, mode "default"
+    bindsym i exec systemctl suspend, mode "default"
+    bindsym c exec systemctl reboot, mode "default"
+    bindsym q exec systemctl poweroff, mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+Shift+q mode "$mode_system"
+bindsym $mod+Shift+x mode "$mode_system"
 
 set $mode_resize Resize Window
 mode "$mode_resize" {
-	bindsym h resize shrink width 1 px or 1 ppt
-	bindsym j resize grow height 1 px or 1 ppt
-	bindsym k resize shrink height 1 px or 1 ppt
-	bindsym l resize grow width 1 px or 1 ppt
+	bindsym s resize shrink width 1 px or 1 ppt
+	bindsym n resize grow height 1 px or 1 ppt
+	bindsym r resize shrink height 1 px or 1 ppt
+	bindsym t resize grow width 1 px or 1 ppt
 	bindsym Left resize shrink width 1 px or 1 ppt
 	bindsym Down resize grow height 1 px or 1 ppt
 	bindsym Up resize shrink height 1 px or 1 ppt
 	bindsym Right resize grow width 1 px or 1 ppt
 
-	bindsym Shift+h resize shrink width 10 px or 10 ppt
-	bindsym Shift+j resize grow height 10 px or 10 ppt
-	bindsym Shift+k resize shrink height 10 px or 10 ppt
-	bindsym Shift+l resize grow width 10 px or 10 ppt
+	bindsym Shift+s resize shrink width 10 px or 10 ppt
+	bindsym Shift+n resize grow height 10 px or 10 ppt
+	bindsym Shift+r resize shrink height 10 px or 10 ppt
+	bindsym Shift+t resize grow width 10 px or 10 ppt
 	bindsym Shift+Left resize shrink width 10 px or 10 ppt
 	bindsym Shift+Down resize grow height 10 px or 10 ppt
 	bindsym Shift+Up resize shrink height 10 px or 10 ppt
@@ -375,7 +371,7 @@ mode "$mode_resize" {
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
-bindsym $mod+x mode "$mode_resize"
+bindsym $mod+odiaeresis mode "$mode_resize"
 
 set $mode_mark_window Mark as [0-9]
 mode "$mode_mark_window" {
@@ -412,7 +408,7 @@ mode "$mode_goto_window" {
 }
 
 # bars
-bindsym $mod+Control+b bar mode toggle bottombar
+bindsym $mod+Control+z bar mode toggle bottombar
 bindsym $mod bar hidden_state toggle bottombar
 
 bar {
