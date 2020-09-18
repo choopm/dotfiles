@@ -1,7 +1,7 @@
 #  vim: set ts=2 sw=2 tw=0 et :
 
 export PRINTER="ifAsec_GmbH_Kyocera_ECOSYS_P6021cdn"
-#export TERM="rxvt-256color"
+export TERM="xterm"
 export BROWSER="icecat"
 export GOPATH="/home/choopm/go"
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -69,8 +69,12 @@ if exists percol; then
   bindkey '^R' percol_select_history
 fi
 
+function timew () {
+    command timew "$@" && py3-cmd refresh timewarrior
+}
+
 function wttr {
-  if [[ ! $1 ]]; then 1="Dortmund"; fi
+  if [[ ! $1 ]]; then 1="Westerstede"; fi
   curl wttr.in/$1
 }
 

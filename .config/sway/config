@@ -10,7 +10,7 @@ input 1133:49970:Logitech_Gaming_Mouse_G502 {
     pointer_accel 1
 }
 
-set $Mon_LVDS Unknown 0x573D 0x00000000
+set $Mon_LVDS eDP-1
 bindswitch --reload --locked lid:on output $Mon_LVDS disable
 bindswitch --reload --locked lid:off output $Mon_LVDS enable
 
@@ -39,10 +39,10 @@ focus_follows_mouse yes
 mouse_warping output
 
 #workspaces
-set $ws1 "1: "
+set $ws1 "1: "
 set $ws2 "2: "
 set $ws3 "3: "
-set $ws4 "4: "
+set $ws4 "4: "
 set $ws5 "5: "
 set $ws6 "6: "
 set $ws7 7
@@ -50,7 +50,7 @@ set $ws8 8
 set $ws9 9
 set $ws10 10
 set $ws11 11
-set $ws12 12
+set $ws12 "12: "
 set $ws13 13
 set $ws14 14
 set $ws15 15
@@ -307,8 +307,8 @@ for_window [class="^Yubico Authenticator$"] floating enable
 #for_window [class="Gimp-2.8"] floating disable; move right; layout stacking
 #for_window [window_role="gimp-toolbox"] floating disable; move left; layout split
 
-assign [class="Firefox"] $ws2
-assign [class="IceCat"] $ws2
+assign [class="icecat"] $ws2
+assign [class="Chromium"] $ws12
 assign [class="Google-chrome-stable"] $ws2
 assign [class="Thunderbird"] $ws3
 #assign [class="Java"] $ws4
@@ -321,7 +321,6 @@ assign [class="TeamSpeak 3"] $ws5
 assign [window_role="buddy_list"] $ws5
 assign [window_role="conversation"] $ws5
 assign [class="Signal"] $ws5
-assign [class="Mattermost"] $ws5
 assign [class="Ekiga"] $ws5
 assign [class="Microsoft Teams"] $ws5
 assign [class="vlc"] $ws16
@@ -373,40 +372,6 @@ mode "$mode_resize" {
 }
 bindsym $mod+odiaeresis mode "$mode_resize"
 
-set $mode_mark_window Mark as [0-9]
-mode "$mode_mark_window" {
-	bindsym 1 mark m1, mode "default"
-	bindsym 2 mark m2, mode "default"
-	bindsym 3 mark m3, mode "default"
-	bindsym 4 mark m4, mode "default"
-	bindsym 5 mark m5, mode "default"
-	bindsym 6 mark m6, mode "default"
-	bindsym 7 mark m7, mode "default"
-	bindsym 8 mark m8, mode "default"
-	bindsym 9 mark m9, mode "default"
-	bindsym 0 mark m0, mode "default"
-
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
-
-set $mode_goto_window Goto mark [0-9]
-mode "$mode_goto_window" {
-	bindsym 1 [con_mark="m1"] focus, mode "default"
-	bindsym 2 [con_mark="m2"] focus, mode "default"
-	bindsym 3 [con_mark="m3"] focus, mode "default"
-	bindsym 4 [con_mark="m4"] focus, mode "default"
-	bindsym 5 [con_mark="m5"] focus, mode "default"
-	bindsym 6 [con_mark="m6"] focus, mode "default"
-	bindsym 7 [con_mark="m7"] focus, mode "default"
-	bindsym 8 [con_mark="m8"] focus, mode "default"
-	bindsym 9 [con_mark="m9"] focus, mode "default"
-	bindsym 0 [con_mark="m0"] focus, mode "default"
-
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
-
 # bars
 bindsym $mod+Control+z bar mode toggle bottombar
 bindsym $mod bar hidden_state toggle bottombar
@@ -420,6 +385,6 @@ bar {
 	workspace_buttons yes
 	binding_mode_indicator yes
 	strip_workspace_numbers no
-	tray_output primary
+	tray_output *
 	status_command $status_command
 }
