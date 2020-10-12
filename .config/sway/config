@@ -388,3 +388,7 @@ bar {
 	tray_output *
 	status_command $status_command
 }
+
+include /etc/sway/config.d/*
+exec systemctl --user start sway-session.target
+
