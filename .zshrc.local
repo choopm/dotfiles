@@ -4,7 +4,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 ttyctl -f
 
-alias dotfile="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
+alias dotfile="git --git-dir=$HOME/git/dotfiles.git --work-tree=$HOME"
 alias t='timew summary :id'
 alias tw='timew'
 alias update='sudo ~/archupdate.sh'
