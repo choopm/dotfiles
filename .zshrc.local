@@ -1,28 +1,16 @@
 #  vim: set ts=2 sw=2 tw=0 et :
 
-export PRINTER="ifAsec_GmbH_Kyocera_ECOSYS_P6021cdn"
-export TERM="xterm"
-export BROWSER="icecat"
-export GOPATH="/home/choopm/go"
-export _JAVA_AWT_WM_NONREPARENTING=1
-export JAVA_HOME=/usr/lib/jvm/default
-export PATH="$PATH:$JAVA_HOME:$GOPATH/bin:/home/choopm/.scripts"
-
-if [ -z "$DISPLAY" ] && [ $(tty) = /dev/tty1 ]; then
-  #startx -- :1 vt1 -nolisten tcp > /dev/null
-  sway
-fi
-
 HISTSIZE=100000
 SAVEHIST=100000
 ttyctl -f
 
-alias x='startx -- :1 vt1 -nolisten tcp > /dev/null'
-alias update='sudo /home/choopm/.scripts/archupdate.sh'
+alias t='timew summary :id'
+alias tw='timew'
+alias update='sudo ~/archupdate.sh'
 alias feh='feh -g 1024x768 '
 alias sc='sudo systemctl'
 alias sj='sudo journalctl'
-alias p='nc 0pointer.org 10101'
+alias p='nc paste.0pointer.org 10101'
 alias pnc='nc -vlp 4242'
 alias more='less'
 alias d='dirs -v'
@@ -31,14 +19,7 @@ alias htpasswd='echo -n "Username? "; read usr; pw=$(pwgen -1 18); hsh=$(openssl
 alias termcolors='for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""'
 
 alias scudosscp='scp -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -C'
-alias scudosssh='TERM=xterm ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -l root'
-function scudosdump() {
-  if [[ $1 ]]; then
-    ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -l root $1 pg_dump -h localhost -U scudos -d lorica \| gzip -9c | gzip -d
-  else
-    echo "Missing host argument, ex: $0 10.101.13.254 > dump.sql"
-  fi
-}
+alias scudosssh='ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -i ~/.ssh/scudos_master -l root'
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

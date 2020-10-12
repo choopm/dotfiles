@@ -4,11 +4,20 @@ general {
     output_format = i3bar
 }
 
+order += "async_script usbguard"
+async_script usbguard {
+    format = "[\?color=orange {output}]"
+    script_path = "usbguard-applet.sh"
+    force_nocolor = true
+    on_click 1 = "exec --no-startup-id usbguard-applet.sh allow"
+    on_click 3 = "exec --no-startup-id usbguard-applet.sh reject"
+}
+
 order += "frame timewarrior"
 frame timewarrior {
     timewarrior {
         format = "[ {format_time}]"
-        filter = '4h'
+        filter = '1h'
 
         format_time_separator = ', '
 
@@ -16,6 +25,9 @@ frame timewarrior {
             'state_tag': [(0, 'darkgray'), (1, 'degraded')],
             'state_time': [(0, 'darkgray'), (1, 'degraded')],
         }
+
+        on_click 1 = "exec --no-startup-id timew stop"
+        on_click 3 = "exec --no-startup-id timew continue"
 
         cache_timeout = 30
     }
@@ -318,42 +330,8 @@ backlight {
 
 order += "battery_level combined"
 battery_level combined {
-    battery_id = "all"
+#    battery_id = "all"
     format = "{icon} {percent}% {time_remaining}"
-    charging_character = ""
-    blocks = ""
-    measurement_mode = "sys"
-    notify_low_level = True
-    hide_seconds = True
-    #hide_when_full = True
-    threshold_bad = 15
-    threshold_degraded = 30
-    threshold_full = 95
-    on_click 4 = "exec --no-startup-id backlightctl set 10%+"
-    on_click 5 = "exec --no-startup-id backlightctl set 10%-"
-}
-
-order += "battery_level external"
-battery_level external {
-    battery_id = 1
-    format = "{icon} {percent}%"
-    charging_character = ""
-    blocks = ""
-    measurement_mode = "sys"
-    notify_low_level = True
-    hide_seconds = True
-    #hide_when_full = True
-    threshold_bad = 15
-    threshold_degraded = 30
-    threshold_full = 95
-    on_click 4 = "exec --no-startup-id backlightctl set 10%+"
-    on_click 5 = "exec --no-startup-id backlightctl set 10%-"
-}
-
-order += "battery_level internal"
-battery_level internal {
-    battery_id = 0
-    format = "{icon} {percent}%"
     charging_character = ""
     blocks = ""
     measurement_mode = "sys"
