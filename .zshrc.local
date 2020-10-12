@@ -7,7 +7,7 @@ ttyctl -f
 alias dotfiles="git --git-dir=$HOME/git/dotfiles.git --work-tree=$HOME"
 alias t='timew summary :id'
 alias tw='timew'
-alias update='sudo ~/archupdate.sh'
+alias update='sudo ~/.scripts/archupdate.sh'
 alias feh='feh -g 1024x768 '
 alias sc='sudo systemctl'
 alias sj='sudo journalctl'
@@ -15,7 +15,7 @@ alias p='nc paste.0pointer.org 10101'
 alias pnc='nc -vlp 4242'
 alias more='less'
 alias d='dirs -v'
-alias ksm='/home/choopm/.scripts/ksm_stats.sh'
+alias ksm='~/.scripts/ksm_stats.sh'
 alias htpasswd='echo -n "Username? "; read usr; pw=$(pwgen -1 18); hsh=$(openssl passwd -apr1 $pw); printf "$usr:$hsh\n#$usr:$pw\n"'
 alias termcolors='for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""'
 
