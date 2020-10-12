@@ -1,0 +1,7 @@
+allow_images=true
+insensitiv=true
+no_actions=true
+columns=2
+show=drun
+stylesheet=dracula.css
+
