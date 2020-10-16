@@ -186,24 +186,24 @@ wireless wlan0 {
     #format_up = " (%bitrate %quality %essid) %ip"
     format_up = " (%quality %essid) %ip"
     format_down = ""
-    on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-auto@wlan0.service; exec --no-startup-id killall -USR1 py3status"
-    on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-auto@wlan0.service; exec --no-startup-id killall -USR1 py3status"
+    on_click 2 = "exec --no-startup-id sudo systemctl stop iwd; exec --no-startup-id killall -USR1 py3status"
+    on_click 3 = "exec --no-startup-id sudo systemctl restart iwd; exec --no-startup-id killall -USR1 py3status"
 }
 
 order += "ethernet eth0"
 ethernet eth0 {
     format_up = " %ip"
     format_down = ""
-    on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-ifplugd@eth0.service; exec --no-startup-id killall -USR1 py3status"
-    on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-ifplugd@eth0.service; exec --no-startup-id killall -USR1 py3status"
+    #on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-ifplugd@eth0.service; exec --no-startup-id killall -USR1 py3status"
+    #on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-ifplugd@eth0.service; exec --no-startup-id killall -USR1 py3status"
 }
 
 order += "ethernet usbc0"
 ethernet usbc0 {
     format_up = " %ip"
     format_down = ""
-    on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-ifplugd@usbc0.service; exec --no-startup-id killall -USR1 py3status"
-    on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-ifplugd@usbc0.service; exec --no-startup-id killall -USR1 py3status"
+    #on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-ifplugd@usbc0.service; exec --no-startup-id killall -USR1 py3status"
+    #on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-ifplugd@usbc0.service; exec --no-startup-id killall -USR1 py3status"
 }
 
 order += "frame gateway"
@@ -317,10 +317,10 @@ volume master {
         device = "default"
         mixer = "Master"
         mixer_idx = 0
-        on_click 1 = "exec --no-startup-id amixer --quiet set Master toggle; exec --no-startup-id killall -USR1 py3status"
-        on_click 3 = "exec --no-startup-id amixer --quiet set Capture toggle; exec --no-startup-id killall -USR1 py3status"
-        on_click 4 = "exec --no-startup-id amixer --quiet set Master 5%+; exec --no-startup-id killall -USR1 py3status"
-        on_click 5 = "exec --no-startup-id amixer --quiet set Master 5%-; exec --no-startup-id killall -USR1 py3status"
+        on_click 1 = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle; exec --no-startup-id killall -USR1 py3status"
+        on_click 3 = "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle; exec --no-startup-id killall -USR1 py3status"
+        on_click 4 = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%; exec --no-startup-id killall -USR1 py3status"
+        on_click 5 = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%; exec --no-startup-id killall -USR1 py3status"
 }
 
 #order += "backlight"

@@ -35,7 +35,7 @@ set $status_command py3status -c ~/.config/sway/status
 set $refreshbar killall -USR1 py3status
 set $setvolume pactl set-sink-volume @DEFAULT_SINK@
 set $setvolmute pactl set-sink-mute @DEFAULT_SINK@
-set $setmicmute pactl set-source-mute @DEFAULT_SINK@
+set $setmicmute pactl set-source-mute @DEFAULT_SOURCE@
 
 floating_modifier $mod
 font pango:Liberation Sans 9
