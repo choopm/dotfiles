@@ -1,0 +1,19 @@
+{
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "workbench.quickOpen.preserveInput": true,
+    "gitlab.instanceUrl": "https://gitlab.scudos.eu",
+    "gitlens.codeLens.scopes": [
+        "document",
+        "containers",
+        "blocks"
+    ],
+    "vs-kubernetes": {
+        "vs-kubernetes.knownKubeconfigs": [
+            "/home/choopm/git/clusters/stadtkrone.scudos.eu/kubeconfig.yaml"
+        ],
+        "vs-kubernetes.kubeconfig": "/home/choopm/git/clusters/stadtkrone.scudos.eu/kubeconfig.yaml"
+    }
+
+}
