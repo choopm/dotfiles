@@ -26,8 +26,8 @@ frame timewarrior {
             'state_time': [(0, 'darkgray'), (1, 'degraded')],
         }
 
-        on_click 1 = "exec --no-startup-id timew stop"
-        on_click 3 = "exec --no-startup-id timew continue"
+        on_click 1 = "exec --no-startup-id timew continue"
+        on_click 3 = "exec --no-startup-id timew stop"
 
         cache_timeout = 30
     }
@@ -151,6 +151,14 @@ frame infos {
     }
 }
 
+order += "ethernet wg0"
+ethernet wg0 {
+        format_up = " %ip"
+        format_down = ""
+        on_click 1 = 'exec sudo ip link set dev wg0 up; exec killall -USR1 py3status'
+        on_click 3 = 'exec sudo ip link set dev wg0 down; exec killall -USR1 py3status'
+}
+
 order += "ethernet tun0"
 ethernet tun0 {
         format_up = " %ip"
@@ -186,24 +194,32 @@ wireless wlan0 {
     #format_up = " (%bitrate %quality %essid) %ip"
     format_up = " (%quality %essid) %ip"
     format_down = ""
-    on_click 2 = "exec --no-startup-id sudo systemctl stop iwd; exec --no-startup-id killall -USR1 py3status"
-    on_click 3 = "exec --no-startup-id sudo systemctl restart iwd; exec --no-startup-id killall -USR1 py3status"
+    on_click 3 = "exec --no-startup-id sudo systemctl stop iwd; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo systemctl restart iwd; exec --no-startup-id killall -USR1 py3status"
 }
 
 order += "ethernet eth0"
 ethernet eth0 {
     format_up = " %ip"
     format_down = ""
-    #on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-ifplugd@eth0.service; exec --no-startup-id killall -USR1 py3status"
-    #on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-ifplugd@eth0.service; exec --no-startup-id killall -USR1 py3status"
+    on_click 3 = "exec --no-startup-id sudo ip link set dev eth0 down; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo ip link set dev eth0 up; exec --no-startup-id killall -USR1 py3status"
 }
 
 order += "ethernet usbc0"
 ethernet usbc0 {
     format_up = " %ip"
     format_down = ""
-    #on_click 2 = "exec --no-startup-id sudo systemctl stop netctl-ifplugd@usbc0.service; exec --no-startup-id killall -USR1 py3status"
-    #on_click 3 = "exec --no-startup-id sudo systemctl restart netctl-ifplugd@usbc0.service; exec --no-startup-id killall -USR1 py3status"
+    on_click 3 = "exec --no-startup-id sudo ip link set dev usbc0 down; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo ip link set dev usbc0 up; exec --no-startup-id killall -USR1 py3status"
+}
+
+order += "ethernet ens1.10"
+"ethernet ens1.10" {
+    format_up = " %ip"
+    format_down = ""
+    on_click 3 = "exec --no-startup-id sudo ip link set dev ens1.10 down; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo ip link set dev ens1.10 up; exec --no-startup-id killall -USR1 py3status"
 }
 
 order += "frame gateway"
