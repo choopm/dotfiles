@@ -14,6 +14,8 @@
             "/home/choopm/git/clusters/stadtkrone.scudos.eu/kubeconfig.yaml"
         ],
         "vs-kubernetes.kubeconfig": "/home/choopm/git/clusters/stadtkrone.scudos.eu/kubeconfig.yaml"
-    }
+    },
+    "go.useLanguageServer": true,
+    "editor.codeActionsOnSave": null
 
 }
