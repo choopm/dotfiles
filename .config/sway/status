@@ -13,7 +13,7 @@ async_script usbguard {
     on_click 3 = "exec --no-startup-id usbguard-applet.sh reject"
 }
 
-order += "frame timewarrior"
+#order += "frame timewarrior"
 frame timewarrior {
     timewarrior {
         format = "[ {format_time}]"
@@ -26,8 +26,8 @@ frame timewarrior {
             'state_time': [(0, 'darkgray'), (1, 'degraded')],
         }
 
-        on_click 1 = "exec --no-startup-id timew continue"
-        on_click 3 = "exec --no-startup-id timew stop"
+        on_click 1 = "exec --no-startup-id /usr/bin/timew continue"
+        on_click 3 = "exec --no-startup-id /usr/bin/timew stop"
 
         cache_timeout = 30
     }
@@ -151,6 +151,12 @@ frame infos {
     }
 }
 
+order += "ipv6"
+ipv6 {
+    format_up = "%ip"
+    format_down = ""
+}
+
 order += "ethernet wg0"
 ethernet wg0 {
         format_up = " %ip"
@@ -175,12 +181,6 @@ order += "ethernet tun2"
 ethernet tun2 {
         format_up = " %ip"
         format_down = ""
-}
-
-order += "ipv6"
-ipv6 {
-    format_up = "%ip"
-    format_down = ""
 }
 
 order += "ethernet ppp0"

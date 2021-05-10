@@ -6,7 +6,10 @@ input * {
     tap enabled
     natural_scroll disabled
 }
-input 1133:49970:Logitech_Gaming_Mouse_G502 {
+input 12951:18804:* {
+    xkb_variant nodeadkeys
+}
+input 1133:16511:Logitech_G502 {
     pointer_accel 1
 }
 
@@ -25,8 +28,8 @@ set $mod Mod4
 set $Alt Mod1
 set $mod2 Mod4+Control
 
-set $terminal termite
-set $terminal-floating termite --title !F!
+set $terminal alacritty
+set $terminal-floating alacritty --title !F!
 
 set $screensaver swaylock -i $wallpaper
 set $wallpaper ~/Syncthing/Bilder/Wallpaper/eye.png

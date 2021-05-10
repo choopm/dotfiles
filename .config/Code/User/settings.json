@@ -16,6 +16,8 @@
         "vs-kubernetes.kubeconfig": "/home/choopm/git/clusters/stadtkrone.scudos.eu/kubeconfig.yaml"
     },
     "go.useLanguageServer": true,
-    "editor.codeActionsOnSave": null
+    "editor.codeActionsOnSave": null,
+    "C_Cpp.updateChannel": "Insiders",
+    "go.toolsManagement.autoUpdate": true
 
 }
