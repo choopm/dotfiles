@@ -13,7 +13,7 @@ async_script usbguard {
     on_click 3 = "exec --no-startup-id usbguard-applet.sh reject"
 }
 
-#order += "frame timewarrior"
+order += "frame timewarrior"
 frame timewarrior {
     timewarrior {
         format = "[ {format_time}]"

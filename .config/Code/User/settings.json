@@ -18,6 +18,13 @@
     "go.useLanguageServer": true,
     "editor.codeActionsOnSave": null,
     "C_Cpp.updateChannel": "Insiders",
-    "go.toolsManagement.autoUpdate": true
+    "go.toolsManagement.autoUpdate": true,
+    "redhat.telemetry.enabled": false,
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
 
 }
