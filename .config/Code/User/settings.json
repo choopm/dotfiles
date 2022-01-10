@@ -1,4 +1,7 @@
 {
+    "editor.rulers": [{
+        "column": 80
+    }],
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
@@ -25,6 +28,13 @@
     },
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
-    }
+    },
+    "workbench.editorAssociations": {
+        "*.pdf": "default"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.startupEditor": "none"
 
 }

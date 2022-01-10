@@ -1,6 +1,7 @@
+;  vim: set ts=2 sw=2 tw=0 et :
 [user]
   name = Christoph Hoopmann
-  email = christophhoopmann@gmail.com
+  email = choopm@0pointer.org
   signingkey = AB689BB7
 [push]
   default = simple
@@ -21,7 +22,9 @@
   tool = vimdiff
 [diff]
   tool = vimdiff
-
-;  vim: set ts=2 sw=2 tw=0 et :
 [pull]
-	rebase = false
+  rebase = false
+[url "ssh://git@gitlab.0pointer.org:2222/"]
+  insteadOf = https://gitlab.0pointer.org/
+[url "ssh://git@github.com/"]
+  insteadOf = https://github.com/

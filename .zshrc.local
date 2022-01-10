@@ -28,6 +28,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/fish-like.zsh
 source ~/.zsh/git-ahead-behind.vim
+source /usr/share/doc/git-extras/git-extras-completion.zsh
 
 function precmd() {
   disambiguate-keeplast
@@ -59,7 +60,7 @@ function timew () {
 
 function wttr {
   if [[ ! $1 ]]; then 1="Westerstede"; fi
-  curl wttr.in/$1
+  curl v2.wttr.in/$1
 }
 
 function dict() {
