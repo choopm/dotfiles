@@ -1,0 +1,293 @@
+general {
+    colors = true
+    interval = 5
+    output_format = i3bar
+}
+
+order += "async_script usbguard"
+async_script usbguard {
+    format = "[\?color=orange {output}]"
+    script_path = "usbguard-applet"
+    force_nocolor = true
+    on_click 1 = "exec --no-startup-id usbguard-applet allow"
+    on_click 3 = "exec --no-startup-id usbguard-applet reject"
+}
+
+order += "scratchpad"
+scratchpad {
+    format = "[\?not_zero  [\?color=scratchpad {scratchpad}]]"
+}
+
+order += "arch_updates"
+arch_updates {
+    cache_timeout = 600
+    format = " {pacman}/{aur}"
+    hide_if_zero = True
+    on_click 1 = "refresh"
+}
+
+#order += "keyboard_locks"
+keyboard_locks {
+    format = '[\?if=caps_lock&color=bad CPSLCK]'
+}
+
+#order += "group systemd"
+group systemd {
+    cycle = 5
+    format = "{output}"
+
+    systemd {
+        format = "{unit}"
+        hide_extension = True
+        unit = 'sshd.service'
+        on_click 1 = 'exec sudo systemctl restart sshd; exec killall -USR1 py3status'
+        on_click 3 = 'exec sudo systemctl stop sshd; exec killall -USR1 py3status'
+    }
+
+    systemd {
+        format = "{unit}"
+        hide_extension = True
+        unit = 'libvirtd.service'
+        on_click 1 = 'exec sudo systemctl restart libvirtd; exec killall -USR1 py3status'
+        on_click 3 = 'exec sudo systemctl stop libvirtd; exec killall -USR1 py3status'
+    }
+
+    systemd {
+        format = "{unit}"
+        hide_extension = True
+        unit = 'docker.service'
+        on_click 1 = 'exec sudo systemctl restart docker; exec killall -USR1 py3status'
+        on_click 3 = 'exec sudo systemctl stop docker; exec killall -USR1 py3status'
+    }
+
+    systemd {
+        format = "{unit}"
+        hide_extension = True
+        unit = 'syncthing.service'
+        user = True
+        on_click 1 = 'exec sudo systemctl --user restart syncthing; exec killall -USR1 py3status'
+        on_click 3 = 'exec sudo systemctl --user stop syncthing; exec killall -USR1 py3status'
+    }
+}
+
+# fixed columns
+
+order += "frame infos"
+frame infos {
+    format = "{output}{button}"
+    format_separator = ' '
+    format_button_closed = "  "
+    format_button_open = " "
+    open = false
+
+    uname {
+        color = 'FF00FF'
+        format = " {release}"
+    }
+
+    diskdata root {
+        cache_timeout = 900
+        disk = "/dev/mapper/root"
+        unit = G
+        format = " / {used_percent}% {used}{unit}"
+        on_click 1 = "exec $terminal -e ranger; refresh"
+    }
+
+    diskdata boot {
+        cache_timeout = 900
+        disk = "nvme0n1p1"
+        unit = G
+        format = " /boot {used_percent}% {used}{unit}"
+        on_click 1 = "exec $terminal -e ranger; refresh"
+    }
+}
+
+order += "ipv6"
+ipv6 {
+    format_up = "%ip"
+    format_down = ""
+}
+
+order += "ethernet wg0"
+ethernet wg0 {
+        format_up = " %ip"
+        format_down = ""
+        on_click 1 = 'exec sudo ip link set dev wg0 up; exec killall -USR1 py3status'
+        on_click 3 = 'exec sudo ip link set dev wg0 down; exec killall -USR1 py3status'
+}
+
+order += "ethernet tun0"
+ethernet tun0 {
+        format_up = " %ip"
+        format_down = ""
+}
+
+order += "ethernet tun1"
+ethernet tun1 {
+        format_up = " %ip"
+        format_down = ""
+}
+
+order += "ethernet tun2"
+ethernet tun2 {
+        format_up = " %ip"
+        format_down = ""
+}
+
+order += "ethernet ppp0"
+ethernet ppp0 {
+        format_up = " %ip"
+        format_down = ""
+}
+
+order += "wireless wlan0"
+wireless wlan0 {
+    #format_up = " (%bitrate %quality %essid) %ip"
+    format_up = " (%quality %essid) %ip"
+    format_down = ""
+    on_click 3 = "exec --no-startup-id sudo systemctl stop iwd; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo systemctl restart iwd; exec --no-startup-id killall -USR1 py3status"
+}
+
+order += "ethernet eth0"
+ethernet eth0 {
+    format_up = " %ip"
+    format_down = ""
+    on_click 3 = "exec --no-startup-id sudo ip link set dev eth0 down; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo ip link set dev eth0 up; exec --no-startup-id killall -USR1 py3status"
+}
+
+order += "ethernet usbc0"
+ethernet usbc0 {
+    format_up = " %ip"
+    format_down = ""
+    on_click 3 = "exec --no-startup-id sudo ip link set dev usbc0 down; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo ip link set dev usbc0 up; exec --no-startup-id killall -USR1 py3status"
+}
+
+order += "ethernet ens19f0.10"
+"ethernet ens19f0.10" {
+    format_up = " %ip"
+    format_down = ""
+    on_click 3 = "exec --no-startup-id sudo ip link set dev ens19f0.10 down; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo ip link set dev ens19f0.10 up; exec --no-startup-id killall -USR1 py3status"
+}
+
+order += "frame gateway"
+frame gateway {
+    format = "{output}"
+    format_separator = ' '
+    open = true
+
+    online_status{
+        icon_off = ""
+        icon_on = ""
+    }
+
+    external_script route {
+        cache_timeout = 900
+        format = "{output}"
+        script_path = "/usr/bin/sh -c \"ip r show default | cut -d' ' -f5\""
+    }
+}
+
+order += "bluetooth"
+bluetooth {
+    format_device = " \?color=connected {alias}"
+}
+
+order += "systemd"
+systemd {
+    format = ""
+    hide_extension = True
+    unit = 'bluetooth.service'
+    on_click 1 = 'exec sudo systemctl restart bluetooth; exec killall -USR1 py3status'
+    on_click 3 = 'exec sudo systemctl stop bluetooth; exec killall -USR1 py3status'
+}
+
+order += "frame temps"
+frame temps {
+    format = "{output}{button}"
+    format_separator = ' '
+    format_button_closed = "  "
+    format_button_open = " "
+    open = false
+
+    #cpu_usage {
+    #    format = " %usage"
+    #}
+
+    #cpu_temperature 0 {
+    #    format = " %degrees°C"
+    #    max_threshold = 80
+    #}
+
+    loadavg {
+        #format = " i%1min %5min %15min"
+        format = ' [\?color=1avg {1min}] [\?color=5avg {5min}] [\?color=15avg {15min}]'
+        max_threshold = "4,1"
+        on_click 1 = "refresh"
+    }
+
+    lm_sensors {
+        format_chip = '[\?if=name=coretemp-isa-0000 ] '
+        format_chip += ' {format_sensor}'
+        format_sensor = '\?color=auto.input {input}°C'
+        sensors = ['core*']
+        on_click 1 = "refresh"
+    }
+
+    #sysdata {
+    #    format = "{cpu_freq_avg}{cpu_freq_unit} [\?color=cpu {cpu_used_percent}%]"
+    #    thresholds = [(0, "white"), (15, "good"), (50, "degraded"), (90, "bad")]
+    #    on_click 1 = "refresh"
+    #}
+
+    sysdata {
+        format = " [\?color=mem {mem_used_percent}%] {mem_used}{mem_unit}"
+        thresholds = [(0, "white"), (15, "good"), (40, "degraded"), (65, "bad")]
+        on_click 1 = "refresh"
+    }
+}
+
+order += "volume master"
+volume master {
+        format = " %volume"
+        format_muted = " (%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+        on_click 1 = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle; exec --no-startup-id killall -USR1 py3status"
+        on_click 3 = "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle; exec --no-startup-id killall -USR1 py3status"
+        on_click 4 = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%; exec --no-startup-id killall -USR1 py3status"
+        on_click 5 = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%; exec --no-startup-id killall -USR1 py3status"
+}
+
+#order += "backlight"
+backlight {
+    format = "☼{level}%"
+}
+
+order += "battery_level combined"
+battery_level combined {
+#    battery_id = "all"
+    format = "{icon} {percent}% {time_remaining}"
+    charging_character = ""
+    blocks = ""
+    measurement_mode = "sys"
+    notify_low_level = True
+    hide_seconds = True
+    #hide_when_full = True
+    threshold_bad = 15
+    threshold_degraded = 30
+    threshold_full = 95
+    on_click 4 = "exec --no-startup-id backlightctl set 10%+"
+    on_click 5 = "exec --no-startup-id backlightctl set 10%-"
+}
+
+order += "tztime local"
+tztime local {
+    format = " %a %d.%m %H:%M"
+    on_click 4 = "exec --no-startup-id backlightctl set 10%+"
+    on_click 5 = "exec --no-startup-id backlightctl set 10%-"
+}
