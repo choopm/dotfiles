@@ -65,7 +65,8 @@ bindsym $mod+z                     border toggle
 
 # launchers
 bindsym $mod+c                     exec wofi
-bindsym $mod+q                     exec rofi-pass
+bindsym $mod+q                     exec wofi-pass -s
+bindsym $mod+ssharp                exec yubico-authenticator
 bindsym $mod+x                     exec wofi-notes
 bindsym $mod+w                     exec workspace-selector
 
@@ -234,14 +235,14 @@ for_window [class="Gpicview"]               floating enable
 for_window [class="Wine"]                   floating enable
 for_window [class="Pavucontrol"]            floating enable
 for_window [class="qemu-system-x86_64"]     floating enable
-for_window [class="^Yubico Authenticator$"] floating enable
+for_window [app_id="yubico-authenticator"]  floating enable
 
 # workspace rules
 assign [class="icecat"]               $ws2
 assign [class="Chromium"]             $ws2
 assign [class="Google-chrome-stable"] $ws2
-assign [class="Thunderbird"]          $ws3
-#assign [class="Java"]                 $ws4
+assign [app_id="thunderbird"]         $ws3
+#assign [class="Java"]                $ws4
 assign [class="kdevelop"]             $ws4
 assign [title=".*Code - OSS$"]        $ws4
 assign [class="Eclipse"]              $ws4
@@ -249,10 +250,10 @@ assign [title="^Eclipse"]             $ws4
 assign [class="^NetBeans IDE"]        $ws4
 assign [class="TeamSpeak 3"]          $ws5
 assign [window_role="buddy_list"]     $ws5
-assign [window_role="conversation"]    $ws5
+assign [window_role="conversation"]   $ws5
 assign [class="Microsoft Teams"]      $ws5
-#assign [class="vlc"]                  $ws16
-#assign [class="Steam"]                $ws17
+#assign [class="vlc"]                 $ws16
+#assign [class="Steam"]               $ws17
 
 # modes
 set $mode_pass_through pass-through

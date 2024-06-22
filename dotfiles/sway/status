@@ -193,17 +193,17 @@ frame gateway {
 
 order += "bluetooth"
 bluetooth {
-    format_device = " \?color=connected {alias}"
+    format_device = " \?color=connected {alias} {battery}%"
 }
 
-order += "systemd"
-systemd {
-    format = ""
-    hide_extension = True
-    unit = 'bluetooth.service'
-    on_click 1 = 'exec sudo systemctl restart bluetooth; exec killall -USR1 py3status'
-    on_click 3 = 'exec sudo systemctl stop bluetooth; exec killall -USR1 py3status'
-}
+# order += "systemd"
+# systemd {
+#     format = ""
+#     hide_extension = True
+#     unit = 'bluetooth.service'
+#     on_click 1 = 'exec sudo systemctl restart bluetooth; exec killall -USR1 py3status'
+#     on_click 3 = 'exec sudo systemctl stop bluetooth; exec killall -USR1 py3status'
+# }
 
 order += "frame temps"
 frame temps {

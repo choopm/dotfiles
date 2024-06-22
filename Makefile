@@ -8,6 +8,9 @@ update:
 apply:
 	home-manager switch
 
+expire:
+	home-manager expire-generations "-1 days"
+
 # Install home-manager using Nix
 install: install-nix enable-nix-flakes
 ifeq (, $(shell which home-manager))
