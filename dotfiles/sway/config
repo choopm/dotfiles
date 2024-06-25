@@ -240,6 +240,7 @@ for_window [app_id="yubico-authenticator"]  floating enable
 # workspace rules
 assign [class="icecat"]               $ws2
 assign [class="Chromium"]             $ws2
+assign [app_id="chromium"]            $ws2
 assign [class="Google-chrome-stable"] $ws2
 assign [app_id="thunderbird"]         $ws3
 #assign [class="Java"]                $ws4

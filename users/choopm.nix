@@ -41,6 +41,7 @@
 
     (pkgs.writeShellScriptBin "update" (builtins.readFile ../bin/arch-update.sh))
     (pkgs.writeShellScriptBin "autosnap-btrfs-root" (builtins.readFile ../bin/autosnap-btrfs-root.sh))
+    (pkgs.writeShellScriptBin "py3status-bt-toggle" (builtins.readFile ../bin/py3status-bt-toggle.sh))
     (pkgs.writeShellScriptBin "htpasswd" (builtins.readFile ../bin/htpasswd.sh))
     (pkgs.writeShellScriptBin "mkrouter" (builtins.readFile ../bin/mkrouter.sh))
     (pkgs.writeShellScriptBin "secureboot-sign" (builtins.readFile ../bin/secureboot-sign.sh))

@@ -193,7 +193,8 @@ frame gateway {
 
 order += "bluetooth"
 bluetooth {
-    format_device = " \?color=connected {alias} {battery}%"
+    format_device = " \?color=connected {alias} [\?if=connected {battery}%]"
+    on_click 1 = "exec py3status-bt-toggle $OUTPUT_PART"
 }
 
 # order += "systemd"
