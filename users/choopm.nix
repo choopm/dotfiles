@@ -38,6 +38,7 @@
     # '')
 
     pkgs.nixd
+    pkgs.go-task
 
     (pkgs.writeShellScriptBin "update" (builtins.readFile ../bin/arch-update.sh))
     (pkgs.writeShellScriptBin "autosnap-btrfs-root" (builtins.readFile ../bin/autosnap-btrfs-root.sh))
