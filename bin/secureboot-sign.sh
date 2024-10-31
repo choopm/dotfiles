@@ -2,6 +2,8 @@
 # I use this to create and sign my EFI stubs
 # Usage: sudo secureboot-sign boot/vmlinuz-linux-hardened && sudo secureboot-sign boot/vmlinuz-linux
 
+set -euxo pipefail
+
 FILE=$(echo $1 | sed 's/boot\///')
 TARGET=$(echo $FILE | sed 's/vmlinuz-//;s/initramfs-//;s/\.img//')
 BOOTDIR=/boot
@@ -9,20 +11,18 @@ CERTDIR=/home/choopm/Syncthing/Archiv/Keys/SecureBoot
 KERNEL="$BOOTDIR/vmlinuz-$TARGET"
 INITRAMFS="/boot/intel-ucode.img /boot/initramfs-$TARGET.img"
 EFISTUB=/usr/lib/systemd/boot/efi/linuxx64.efi.stub
-BUILDDIR=/tmp/_build
 OUTIMG=/boot/vmlinuz-$TARGET-signed.efi
 CMDLINE=/boot/loader/entries/1-arch-vanilla.conf
 SYSTEMDBOOT=/boot/EFI/systemd/systemd-bootx64.efi
 SYSTEMDBOOTSTUB=/usr/lib/systemd/boot/efi/systemd-bootx64.efi
-
-mkdir -p $BUILDDIR
+BUILDDIR=$(mktemp -d)
 
 cat ${INITRAMFS} > ${BUILDDIR}/initramfs.img
 cat ${CMDLINE} | grep options | cut -d' ' -f2- > ${BUILDDIR}/cmdline.txt
 
 echo "==> Installing $SYSTEMDBOOTSTUB"
-cp ${SYSTEMDBOOTSTUB} ${SYSTEMDBOOT}
-/usr/bin/sbsign --key ${CERTDIR}/DB.key --cert ${CERTDIR}/DB.crt --output ${SYSTEMDBOOT} ${SYSTEMDBOOT} 2>/dev/null
+/usr/bin/sbsign --key ${CERTDIR}/DB.key --cert ${CERTDIR}/DB.crt --output ${BUILDDIR}/signed-systemd.efi ${SYSTEMDBOOTSTUB} 2>/dev/null
+sudo cp ${BUILDDIR}/signed-systemd.efi ${SYSTEMDBOOT}
 echo "==> Signed $SYSTEMDBOOT"
 
 align="$(objdump -p ${EFISTUB} | awk '{ if ($1 == "SectionAlignment"){print $2} }')"
@@ -46,5 +46,6 @@ objcopy \
     --change-section-vma .linux=$(printf 0x%x $linux_offs) \
     ${EFISTUB} ${BUILDDIR}/combined-boot.efi
 
-/usr/bin/sbsign --key ${CERTDIR}/DB.key --cert ${CERTDIR}/DB.crt --output ${OUTIMG} ${BUILDDIR}/combined-boot.efi # 2>/dev/null
+/usr/bin/sbsign --key ${CERTDIR}/DB.key --cert ${CERTDIR}/DB.crt --output ${BUILDDIR}/signed.efi ${BUILDDIR}/combined-boot.efi # 2>/dev/null
+sudo cp ${BUILDDIR}/signed.efi ${OUTIMG}
 echo "==> Signed $OUTIMG"

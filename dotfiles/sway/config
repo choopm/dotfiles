@@ -18,10 +18,8 @@ set $Mon_LVDS eDP-1
 bindswitch --reload --locked lid:on output $Mon_LVDS disable
 bindswitch --reload --locked lid:off output $Mon_LVDS enable
 
-# LVDS
-output "Unknown 0x573D 0x00000000" pos 0,0
-# monitor config at home
-output "BenQ Corporation ZOWIE XL LCD EAG01008SL0" pos 1920,0
+output "DP-1" mode 2560x1440@60Hz pos 0 0
+output "HDMI-A-2" mode 2560x1440@60Hz pos 2560 0
 
 # settings
 set $mod Mod4
