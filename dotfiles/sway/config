@@ -217,6 +217,7 @@ bindsym $mod+Shift+Next  move container to workspace next; workspace next
 bindsym $mod+Shift+Prior move container to workspace prev; workspace prev
 
 # window rules
+for_window [shell="xwayland"] title_format "[XWayland] %title"
 #for_window [class="^.*"]                    border pixel 1
 for_window [class="^.*"]                    border normal
 for_window [window_role="pop-up"]           floating enable
