@@ -105,6 +105,7 @@
     XDG_CURRENT_DESKTOP = "sway";
     XDG_SESSION_TYPE = "wayland";
     #GDK_BACKEND = "wayland";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
 
     # golang
     GOPATH = "$HOME/.go";

@@ -35,7 +35,7 @@
       init = {
         defaultBranch = "main";
       };
-      # set outside in ~/.gitconfig
+      # set outside in ~/.gitconfig using `git config --file=.gitconfig url.https://ghp_xxx@github.com/.insteadOf https://github.com/`
       # url = {
       #   "https://choopm:<ghp_>@github.com/" = {
       #     insteadOf = "https://github.com/";
