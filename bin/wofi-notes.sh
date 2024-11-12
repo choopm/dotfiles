@@ -3,7 +3,7 @@
 # Selecting existing lines will remove them from config.
 # Input text to add new lines.
 
-NOTES_FILE=~/.notes
+NOTES_FILE=~/Syncthing/Dokumente/.wofi-notes
 
 if [[ ! -a "${NOTES_FILE}" ]]; then
     echo "empty" >> "${NOTES_FILE}"
