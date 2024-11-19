@@ -125,19 +125,4 @@
   imports = [
     ../programs/_.nix
   ];
-
-  # services
-  services.gpg-agent = {
-    enable = true;
-    defaultCacheTtl = 1800;
-  };
-
-  services.ssh-agent = {
-    enable = true;
-  };
-
-  services.mako = {
-    enable = true;
-  };
-
 }
