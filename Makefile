@@ -36,7 +36,7 @@ endif
 missing-files: missing-sshnix
 
 # ssh.nix is missing from repository for security reasons.
-# This creates en epmty file so home-manager does not fail.
+# This creates en empty file so home-manager does not fail.
 missing-sshnix:
 ifeq (,$(wildcard ./programs/ssh.nix))
 	echo "{}" > ./programs/ssh.nix

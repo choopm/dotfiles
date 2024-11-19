@@ -9,9 +9,6 @@ input * {
 input 12951:18804:* {
     xkb_variant nodeadkeys
 }
-input 1133:16511:Logitech_G502 {
-    pointer_accel 1
-}
 
 # Disable LVDS on lid switch
 set $Mon_LVDS eDP-1
@@ -27,7 +24,7 @@ set $Alt Mod1
 set $mod2 Mod4+Control
 
 set $terminal alacritty
-set $terminal-floating alacritty --title !F!
+set $terminal-floating alacritty --class Alacritty-floating
 
 set $screensaver swaylock -c '#000000'
 set $wallpaper ~/Syncthing/Bilder/wallpaper.png
@@ -38,6 +35,8 @@ set $setvolume pactl set-sink-volume @DEFAULT_SINK@
 set $setvolmute pactl set-sink-mute @DEFAULT_SINK@
 set $setmicmute pactl set-source-mute @DEFAULT_SOURCE@
 
+set $dokexec "sudo kexec --load /boot/vmlinuz-linux --initrd /boot/initramfs-linux.img --reuse-cmdline; sudo systemctl kexec"
+
 floating_modifier $mod
 font pango:Liberation Sans 9
 workspace_auto_back_and_forth yes
@@ -45,6 +44,7 @@ focus_follows_mouse yes
 mouse_warping output
 
 # autoruns
+exec mako
 exec autosnap-btrfs-root
 output "*" bg $wallpaper fill
 
@@ -81,7 +81,7 @@ bindsym $mod+l                     layout toggle split
 bindsym $mod+space                 floating toggle
 
 # audio bindings
-bindsym XF86AudioLowerVolume       exec $setvolume -5% exec $refreshbar
+bindsym XF86AudioLowerVolume       exec $setvolume -5%; exec $refreshbar
 bindsym XF86AudioRaiseVolume       exec $setvolume +5%; exec $refreshbar
 bindsym $mod+Control+F4            exec $setvolume -5%; exec $refreshbar
 bindsym $mod+Control+F5            exec $setvolume +5%; exec $refreshbar
@@ -141,7 +141,7 @@ bindsym $mod+Control+Prior         move workspace to output left
 
 # workspaces
 set $ws1   "1: "
-set $ws2   "2: "
+set $ws2   "2: "
 set $ws3   "3: "
 set $ws4   "4: "
 set $ws5   "5: "
@@ -151,12 +151,12 @@ set $ws8   8
 set $ws9   9
 set $ws10  10
 set $ws11  11
-set $ws12  "12: "
+set $ws12  12
 set $ws13  13
 set $ws14  14
 set $ws15  15
 set $ws16  16
-set $ws16  "16: "
+set $ws16  16
 set $ws17  17
 set $ws18  18
 set $ws19  19
@@ -216,59 +216,39 @@ bindsym $mod+Shift+F12   move container to workspace $ws22
 bindsym $mod+Shift+Next  move container to workspace next; workspace next
 bindsym $mod+Shift+Prior move container to workspace prev; workspace prev
 
-# window rules
+# window general
 for_window [shell="xwayland"] title_format "[XWayland] %title"
-#for_window [class="^.*"]                    border pixel 1
-for_window [class="^.*"]                    border normal
-for_window [window_role="pop-up"]           floating enable
-for_window [window_role="task_dialog"]      floating enable
-for_window [window_role="page-info"]        floating enable
-for_window [title="Preferences$"]           floating enable
-for_window [window_role="^.*Options"]       floating enable
-for_window [title="^.*!F!.*"]               floating enable
-for_window [window_role="Preferences$"]     floating enable
-for_window [window_role="PasswordManager$"] floating enable
-for_window [class="Galculator"]             floating enable
-for_window [class="feh"]                    floating enable
-for_window [class="Gpicview"]               floating enable
-for_window [class="Wine"]                   floating enable
-for_window [class="Pavucontrol"]            floating enable
-for_window [class="qemu-system-x86_64"]     floating enable
-for_window [app_id="yubico-authenticator"]  floating enable
+for_window [app_id="^.*"]     border normal
+for_window [class="^.*"]      border normal
 
-# workspace rules
-assign [class="icecat"]               $ws2
-assign [class="Chromium"]             $ws2
-assign [app_id="chromium"]            $ws2
-assign [class="Google-chrome-stable"] $ws2
-assign [app_id="thunderbird"]         $ws3
-#assign [class="Java"]                $ws4
-assign [class="kdevelop"]             $ws4
-assign [title=".*Code - OSS$"]        $ws4
-assign [class="Eclipse"]              $ws4
-assign [title="^Eclipse"]             $ws4
-assign [class="^NetBeans IDE"]        $ws4
-assign [class="TeamSpeak 3"]          $ws5
-assign [window_role="buddy_list"]     $ws5
-assign [window_role="conversation"]   $ws5
-assign [class="Microsoft Teams"]      $ws5
-#assign [class="vlc"]                 $ws16
-#assign [class="Steam"]               $ws17
+# window floating
+for_window [app_id=".*-floating$"]               floating enable
+for_window [class="feh"]                         floating enable
+for_window [app_id="galculator"]                 floating enable
+for_window [app_id="org.pulseaudio.pavucontrol"] floating enable
+for_window [app_id="yubico-authenticator"]       floating enable
+
+# workspace bindings
+assign [app_id="chromium"]    $ws2
+assign [app_id="firefox"]     $ws2
+assign [app_id="thunderbird"] $ws3
 
 # modes
 set $mode_pass_through pass-through
 mode "pass-through" {
-	  bindsym $mod+BackSpace         mode "default"
+	bindsym $mod+BackSpace mode "default"
 }
-bindsym $mod+BackSpace             mode "$mode_pass_through"
+bindsym $mod+BackSpace mode "$mode_pass_through"
 
-set $mode_system System (l)ock, e(x)it, (s)uspend, (r)eboot, (p)oweroff
+set $mode_system System (l)ock, e(x)it, (s)uspend, (r)eboot, (k)exec, (p)oweroff
 mode "$mode_system" {
-    bindsym l exec $screensaver, mode "default"
-    bindsym x exit, mode "default"
-    bindsym s exec systemctl suspend, mode "default"
-    bindsym r exec systemctl reboot, mode "default"
-    bindsym p exec systemctl poweroff, mode "default"
+    bindsym l      exec $screensaver; mode "default"
+    bindsym x      exit; mode "default"
+
+    bindsym s      exec sudo systemctl suspend; mode "default"
+    bindsym r      exec sudo systemctl reboot; mode "default"
+    bindsym p      exec sudo systemctl poweroff; mode "default"
+    bindsym k      exec $dokexec; mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
