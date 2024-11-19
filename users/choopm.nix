@@ -45,7 +45,6 @@
     (pkgs.writeShellScriptBin "py3status-bt-toggle" (builtins.readFile ../bin/py3status-bt-toggle.sh))
     (pkgs.writeShellScriptBin "htpasswd" (builtins.readFile ../bin/htpasswd.sh))
     (pkgs.writeShellScriptBin "mkrouter" (builtins.readFile ../bin/mkrouter.sh))
-    (pkgs.writeShellScriptBin "secureboot-sign" (builtins.readFile ../bin/secureboot-sign.sh))
     (pkgs.writeShellScriptBin "termcolors" (builtins.readFile ../bin/termcolors.sh))
     (pkgs.writeShellScriptBin "usbguard-applet" (builtins.readFile ../bin/usbguard-applet.sh))
     (pkgs.writeShellScriptBin "wayland-scrot" (builtins.readFile ../bin/wayland-scrot.sh))
