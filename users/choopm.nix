@@ -46,6 +46,7 @@
     (pkgs.writeShellScriptBin "htpasswd" (builtins.readFile ../bin/htpasswd.sh))
     (pkgs.writeShellScriptBin "mkrouter" (builtins.readFile ../bin/mkrouter.sh))
     (pkgs.writeShellScriptBin "termcolors" (builtins.readFile ../bin/termcolors.sh))
+    (pkgs.writeShellScriptBin "slideshow" (builtins.readFile ../bin/slideshow.sh))
     (pkgs.writeShellScriptBin "usbguard-applet" (builtins.readFile ../bin/usbguard-applet.sh))
     (pkgs.writeShellScriptBin "wayland-scrot" (builtins.readFile ../bin/wayland-scrot.sh))
     (pkgs.writeShellScriptBin "wofi-notes" (builtins.readFile ../bin/wofi-notes.sh))

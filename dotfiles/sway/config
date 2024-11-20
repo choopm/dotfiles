@@ -26,8 +26,10 @@ set $mod2 Mod4+Control
 set $terminal alacritty
 set $terminal-floating alacritty --class Alacritty-floating
 
-set $screensaver swaylock -c '#000000'
-set $wallpaper ~/Syncthing/Bilder/wallpaper.png
+set $wallpaperdir ~/.wallpapers/
+set $wallpaper ~/.wallpaper.jpg
+set $doslideshow slideshow $wallpaperdir $wallpaper
+set $screensaver swaylock -c '#000000' -e -F -s fit -i $wallpaper
 set $status_command py3status -c ~/.config/sway/status
 
 set $refreshbar killall -USR1 py3status
@@ -47,7 +49,8 @@ mouse_warping output
 exec mako
 exec aa-notify -p -s 1 -w 10 -f /var/log/audit/audit.log
 exec autosnap-btrfs-root
-output "*" bg $wallpaper fill
+exec watch -n 300 $doslideshow
+output "*" bg $wallpaper fit
 
 # start / kill
 bindsym $mod+Return                exec $terminal

@@ -27,6 +27,10 @@
       mouse.hide_when_typing = true;
       scrolling.history = 100000;
 
+      window = {
+        opacity = 0.9;
+      };
+
       window.dimensions = {
         columns = 85;
         lines = 25;
