@@ -45,6 +45,7 @@ mouse_warping output
 
 # autoruns
 exec mako
+exec aa-notify -p -s 1 -w 10 -f /var/log/audit/audit.log
 exec autosnap-btrfs-root
 output "*" bg $wallpaper fill
 
