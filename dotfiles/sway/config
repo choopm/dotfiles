@@ -15,8 +15,12 @@ set $Mon_LVDS eDP-1
 bindswitch --reload --locked lid:on output $Mon_LVDS disable
 bindswitch --reload --locked lid:off output $Mon_LVDS enable
 
-output "DP-1" mode 2560x1440@60Hz pos 0 0
-output "HDMI-A-2" mode 2560x1440@60Hz pos 2560 0
+# # both horizontal
+# output "DP-1" mode 2560x1440@60Hz pos 0 0
+# output "HDMI-A-2" mode 2560x1440@60Hz pos 2560 0
+# left vertical, right horizontal
+output "DP-1" mode 2560x1440@60Hz pos 0 0 transform 270
+output "HDMI-A-2" mode 2560x1440@60Hz pos 1440 505
 
 # settings
 set $mod Mod4
