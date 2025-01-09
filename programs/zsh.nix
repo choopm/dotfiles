@@ -147,6 +147,10 @@
       # set those so history-substring-search won't show dups
       setopt HIST_IGNORE_DUPS HIST_FIND_NO_DUPS
 
+      # use alacritty window id as gardenctl session
+      # this isolates gardenctl scopes to the current terminal
+      export GCTL_SESSION_ID="$ALACRITTY_WINDOW_ID"
+
       # starship prompt
       eval $(starship init zsh)
     '';
