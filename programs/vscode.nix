@@ -52,6 +52,7 @@
       "workbench.startupEditor" = "none";
       "workbench.quickOpen.preserveInput" = true;
       "chat.commandCenter.enabled" = false;
+      "workbench.navigationControl.enabled" = false;
     };
   };
 

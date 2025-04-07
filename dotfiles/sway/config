@@ -74,7 +74,8 @@ bindsym $mod+c                     exec wofi
 bindsym $mod+q                     exec wofi-pass -s
 bindsym $mod+ssharp                exec yubico-authenticator
 bindsym $mod+x                     exec wofi-notes
-bindsym $mod+w                     exec workspace-selector
+bindsym $mod+w                     exec window-selector
+bindsym $mod+Shift+w               exec workspace-selector
 
 bindsym --release Print            exec wayland-scrot
 bindsym --release Shift+Print      exec wayland-scrot slurp

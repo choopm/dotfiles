@@ -28,6 +28,7 @@
       d = "dirs -v";
 
       k = "kubectl";
+      kl = "export KUBECONFIG=$(pwd)/kubeconfig";
       hm = "home-manager";
 
       l = "ls -l --color=auto";

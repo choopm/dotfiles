@@ -49,6 +49,7 @@
     (pkgs.writeShellScriptBin "slideshow" (builtins.readFile ../bin/slideshow.sh))
     (pkgs.writeShellScriptBin "usbguard-applet" (builtins.readFile ../bin/usbguard-applet.sh))
     (pkgs.writeShellScriptBin "wayland-scrot" (builtins.readFile ../bin/wayland-scrot.sh))
+    (pkgs.writeShellScriptBin "window-selector" (builtins.readFile ../bin/window-selector.sh))
     (pkgs.writeShellScriptBin "wofi-notes" (builtins.readFile ../bin/wofi-notes.sh))
     (pkgs.writeShellScriptBin "workspace-selector" (builtins.readFile ../bin/workspace-selector.sh))
   ];
