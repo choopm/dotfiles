@@ -29,6 +29,7 @@
 
       k = "kubectl";
       kl = "export KUBECONFIG=$(pwd)/kubeconfig";
+      tl = "export TALOSCONFIG=$(pwd)/talosconfig";
       hm = "home-manager";
 
       l = "ls -l --color=auto";
