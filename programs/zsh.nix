@@ -38,6 +38,8 @@
       lh = "ls -hAl --color=auto";
       lsbig = "ls -flh *(.OL[1,10])";
 
+      htpasswd = "docker run --rm alpine sh -c 'apk add pwgen apache2-utils && export pw=`pwgen -B 32 -N 1 -1` && echo \"# $pw\" && htpasswd -nbB username $pw'";
+
       insecscp = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
       insecssh = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
     };
