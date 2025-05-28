@@ -58,6 +58,13 @@
       }
       add-zsh-hook precmd prompt_ringbell_precmd
 
+      # set title to whatever is running and where
+      set_title_hook() {
+        print -Pn "\e]0;$1%~\a"
+      }
+      add-zsh-hook precmd set_title_hook
+      add-zsh-hook preexec set_title_hook
+
       # menu style completion
       zstyle ':completion:*' menu select
 

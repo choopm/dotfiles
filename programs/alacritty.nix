@@ -22,18 +22,22 @@
         foreground = "#209bd7";
       };
 
-      font.size = 10.0;
-      font.normal.family = "Meslo LG S DZ for Powerline";
+      font = {
+        size = 10.0;
+        normal.family = "Meslo LG S DZ for Powerline";
+      };
+
       mouse.hide_when_typing = true;
       scrolling.history = 100000;
 
       window = {
         opacity = 0.9;
-      };
+        dynamic_title = true;
 
-      window.dimensions = {
-        columns = 85;
-        lines = 25;
+        dimensions = {
+          columns = 85;
+          lines = 25;
+        };
       };
     };
   };
