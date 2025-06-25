@@ -15,12 +15,14 @@ set $Mon_LVDS eDP-1
 bindswitch --reload --locked lid:on output $Mon_LVDS disable
 bindswitch --reload --locked lid:off output $Mon_LVDS enable
 
-# # both horizontal
-# output "DP-1" mode 2560x1440@60Hz pos 0 0
-# output "HDMI-A-2" mode 2560x1440@60Hz pos 2560 0
-# left vertical, right horizontal
-output "DP-1" mode 2560x1440@60Hz pos 0 0 transform 270
-output "HDMI-A-2" mode 2560x1440@60Hz pos 1440 505
+# monitor config: left/right portrait, mid landscape
+output "HDMI-A-1" mode 2560x1440@60Hz pos 0 0 transform 270
+output "DP-1" mode 3440x1440@100Hz pos 1440 670
+output "DP-2" mode 2560x1440@60Hz pos 4880 0 transform 90
+output "*" bg ~/.wallpapers/default fit
+output "HDMI-A-1" bg ~/.wallpapers/left fit
+output "DP-1" bg ~/.wallpapers/mid fit
+output "DP-2" bg ~/.wallpapers/right fit
 
 # settings
 set $mod Mod4
@@ -30,10 +32,7 @@ set $mod2 Mod4+Control
 set $terminal alacritty
 set $terminal-floating alacritty --class Alacritty-floating
 
-set $wallpaperdir ~/.wallpapers/
-set $wallpaper ~/.wallpaper.jpg
-set $doslideshow slideshow $wallpaperdir $wallpaper
-set $screensaver swaylock -c '#000000' -e -F -s fit -i $wallpaper
+set $screensaver swaylock -c '#000000' -e -F -s fit
 set $status_command py3status -c ~/.config/sway/status
 
 set $refreshbar killall -USR1 py3status
@@ -53,8 +52,6 @@ mouse_warping output
 exec mako
 exec aa-notify -p -s 1 -w 10 -f /var/log/audit/audit.log
 exec autosnap-btrfs-root
-exec watch -n 300 $doslideshow
-output "*" bg $wallpaper fit
 
 # start / kill
 bindsym $mod+Return                exec $terminal
@@ -236,6 +233,7 @@ for_window [class="feh"]                         floating enable
 for_window [app_id="galculator"]                 floating enable
 for_window [app_id="org.pulseaudio.pavucontrol"] floating enable
 for_window [app_id="yubico-authenticator"]       floating enable
+for_window [app_id="com.yubico.yubioath"]        floating enable
 
 # workspace bindings
 assign [app_id="chromium"]    $ws2
@@ -249,18 +247,17 @@ mode "pass-through" {
 }
 bindsym $mod+BackSpace mode "$mode_pass_through"
 
-set $mode_system System (l)ock, e(x)it, (s)uspend, (r)eboot, (k)exec, (p)oweroff
+set $mode_system System (l)ock, e(x)it, (s)uspend, (r)eboot, (R)eboot+firmware, (k)exec, (p)oweroff
 mode "$mode_system" {
-    bindsym l      exec $screensaver; mode "default"
-    bindsym x      exit; mode "default"
-
-    bindsym s      exec sudo systemctl suspend; mode "default"
-    bindsym r      exec sudo systemctl reboot; mode "default"
-    bindsym p      exec sudo systemctl poweroff; mode "default"
-    bindsym k      exec $dokexec; mode "default"
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym l       exec $screensaver; mode "default"
+    bindsym x       exit; mode "default"
+    bindsym s       exec sudo systemctl suspend; mode "default"
+    bindsym r       exec sudo systemctl reboot; mode "default"
+    bindsym Shift+r exec sudo systemctl reboot --firmware-setup; mode "default"
+    bindsym p       exec sudo systemctl poweroff; mode "default"
+    bindsym k       exec $dokexec; mode "default"
+    bindsym Return  mode "default"
+    bindsym Escape  mode "default"
 }
 bindsym $mod+Shift+x mode "$mode_system"
 

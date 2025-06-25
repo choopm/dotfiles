@@ -16,6 +16,7 @@ async_script usbguard {
 order += "scratchpad"
 scratchpad {
     format = "[\?not_zero  [\?color=scratchpad {scratchpad}]]"
+    on_click 1 = 'scratchpad show'
 }
 
 order += "arch_updates"
@@ -72,34 +73,75 @@ group systemd {
 
 # fixed columns
 
-order += "frame infos"
-frame infos {
-    format = "{output}{button}"
-    format_separator = ' '
-    format_button_closed = "  "
-    format_button_open = " "
-    open = false
+# order += "uname"
+# uname {
+#     color = 'FF00FF'
+#     format = " {release}"
+# }
 
-    uname {
-        color = 'FF00FF'
-        format = " {release}"
-    }
+order += "frame syshealth"
+frame syshealth {
+    format = "{output}"
+    format_separator = ' '
+    open = true
 
     diskdata root {
         cache_timeout = 900
         disk = "/dev/mapper/root"
         unit = G
-        format = " / {used_percent}% {used}{unit}"
+        format = " {used_percent}%"
         on_click 1 = "exec $terminal -e ranger; refresh"
     }
 
-    diskdata boot {
-        cache_timeout = 900
-        disk = "nvme0n1p1"
-        unit = G
-        format = " /boot {used_percent}% {used}{unit}"
-        on_click 1 = "exec $terminal -e ranger; refresh"
+    sysdata {
+        format = " [\?color=mem {mem_used_percent}%]"
+        thresholds = [(0, "white"), (15, "good"), (40, "degraded"), (65, "bad")]
+        on_click 1 = "refresh"
     }
+
+    lm_sensors {
+        format_chip = '[\?if=name=k10temp-pci-00c3  {format_sensor}]'
+        format_chip += '[\?if=name=amdgpu-pci-0100  {format_sensor}]'
+        format_chip += '[\?if=name=nvme-pci-0700]' # hide from output
+        format_chip += '[\?if=name=nvme-pci-0800]' # hide from output
+        format_chip += '[\?if=name=nvme-pci-0900]' # hide from output
+        format_sensor = '{input}°'
+        chips = [
+            'k10temp.*',
+            'amdgpu.*',
+            'nvme.*'
+        ]
+        sensors = [
+            'tctl',
+            'edge',
+            'composite'
+        ]
+        on_click 1 = "refresh"
+    }
+
+    loadavg {
+        format = ' [\?color=1avg {1min}] [\?color=5avg {5min}] [\?color=15avg {15min}]'
+        max_threshold = "4,1"
+        on_click 1 = "refresh"
+    }
+}
+
+order += "frame gateway"
+frame gateway {
+    format = "{output}"
+    format_separator = ' '
+    open = true
+
+    online_status{
+        icon_off = ""
+        icon_on = ""
+    }
+
+    # external_script route {
+    #     cache_timeout = 900
+    #     format = "{output}"
+    #     script_path = "/usr/bin/sh -c \"ip r show default | cut -d' ' -f5\""
+    # }
 }
 
 order += "ipv6"
@@ -149,6 +191,15 @@ wireless wlan0 {
     on_click 1 = "exec --no-startup-id sudo systemctl restart iwd; exec --no-startup-id killall -USR1 py3status"
 }
 
+order += "wireless wlp6s0"
+wireless wlp6s0 {
+    #format_up = " (%bitrate %quality %essid) %ip"
+    format_up = " (%quality %essid) %ip"
+    format_down = ""
+    on_click 3 = "exec --no-startup-id sudo systemctl stop iwd; exec --no-startup-id killall -USR1 py3status"
+    on_click 1 = "exec --no-startup-id sudo systemctl restart iwd; exec --no-startup-id killall -USR1 py3status"
+}
+
 order += "ethernet eth0"
 ethernet eth0 {
     format_up = " %ip"
@@ -165,32 +216,6 @@ ethernet usbc0 {
     on_click 1 = "exec --no-startup-id sudo ip link set dev usbc0 up; exec --no-startup-id killall -USR1 py3status"
 }
 
-order += "ethernet ens19f0.10"
-"ethernet ens19f0.10" {
-    format_up = " %ip"
-    format_down = ""
-    on_click 3 = "exec --no-startup-id sudo ip link set dev ens19f0.10 down; exec --no-startup-id killall -USR1 py3status"
-    on_click 1 = "exec --no-startup-id sudo ip link set dev ens19f0.10 up; exec --no-startup-id killall -USR1 py3status"
-}
-
-order += "frame gateway"
-frame gateway {
-    format = "{output}"
-    format_separator = ' '
-    open = true
-
-    online_status{
-        icon_off = ""
-        icon_on = ""
-    }
-
-    external_script route {
-        cache_timeout = 900
-        format = "{output}"
-        script_path = "/usr/bin/sh -c \"ip r show default | cut -d' ' -f5\""
-    }
-}
-
 order += "bluetooth"
 bluetooth {
     format_device = " \?color=connected {alias} [\?if=connected {battery}%]"
@@ -205,51 +230,6 @@ bluetooth {
 #     on_click 1 = 'exec sudo systemctl restart bluetooth; exec killall -USR1 py3status'
 #     on_click 3 = 'exec sudo systemctl stop bluetooth; exec killall -USR1 py3status'
 # }
-
-order += "frame temps"
-frame temps {
-    format = "{output}{button}"
-    format_separator = ' '
-    format_button_closed = "  "
-    format_button_open = " "
-    open = false
-
-    #cpu_usage {
-    #    format = " %usage"
-    #}
-
-    #cpu_temperature 0 {
-    #    format = " %degrees°C"
-    #    max_threshold = 80
-    #}
-
-    loadavg {
-        #format = " i%1min %5min %15min"
-        format = ' [\?color=1avg {1min}] [\?color=5avg {5min}] [\?color=15avg {15min}]'
-        max_threshold = "4,1"
-        on_click 1 = "refresh"
-    }
-
-    lm_sensors {
-        format_chip = '[\?if=name=coretemp-isa-0000 ] '
-        format_chip += ' {format_sensor}'
-        format_sensor = '\?color=auto.input {input}°C'
-        sensors = ['core*']
-        on_click 1 = "refresh"
-    }
-
-    #sysdata {
-    #    format = "{cpu_freq_avg}{cpu_freq_unit} [\?color=cpu {cpu_used_percent}%]"
-    #    thresholds = [(0, "white"), (15, "good"), (50, "degraded"), (90, "bad")]
-    #    on_click 1 = "refresh"
-    #}
-
-    sysdata {
-        format = " [\?color=mem {mem_used_percent}%] {mem_used}{mem_unit}"
-        thresholds = [(0, "white"), (15, "good"), (40, "degraded"), (65, "bad")]
-        on_click 1 = "refresh"
-    }
-}
 
 order += "volume master"
 volume master {

@@ -51,6 +51,7 @@
     (pkgs.writeShellScriptBin "window-selector" (builtins.readFile ../bin/window-selector.sh))
     (pkgs.writeShellScriptBin "wofi-notes" (builtins.readFile ../bin/wofi-notes.sh))
     (pkgs.writeShellScriptBin "workspace-selector" (builtins.readFile ../bin/workspace-selector.sh))
+    (pkgs.writeShellScriptBin "zmkbat" (builtins.readFile ../bin/zmkbat.sh))
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
