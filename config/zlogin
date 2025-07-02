@@ -1,0 +1,11 @@
+# session env vars
+export $(systemctl --user show-environment)
+# session env vars containing whitespace:
+export PAGER="less -R"
+
+# autostart sway after login to tty1
+if [[ -z $DISPLAY && "$TTY" == "/dev/tty1" ]]; then
+    systemd-cat -t sway sway
+    systemctl --user stop sway-session.target
+    systemctl --user unset-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+fi

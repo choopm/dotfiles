@@ -1,0 +1,48 @@
+{
+  "[go]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": false
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "chat.commandCenter.enabled": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.rulers": [
+    {
+      "column": 80
+    }
+  ],
+  "explorer.confirmDelete": false,
+  "extensions.ignoreRecommendations": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "go.formatTool": "gofmt",
+  "go.toolsManagement.autoUpdate": true,
+  "go.toolsManagement.checkForUpdates": "local",
+  "go.useLanguageServer": true,
+  "nix.enableLanguageServer": true,
+  "nix.formatterPath": "nixpkgs-fmt",
+  "nix.serverPath": "nixd",
+  "remote.autoForwardPortsSource": "hybrid",
+  "telemetry.telemetryLevel": "off",
+  "terminal.integrated.fontFamily": "Meslo LG S DZ for Powerline",
+  "terminal.integrated.scrollback": 10000,
+  "workbench.editorAssociations": {
+    "*.pdf": "default"
+  },
+  "workbench.navigationControl.enabled": false,
+  "workbench.quickOpen.preserveInput": true,
+  "workbench.startupEditor": "none"
+}

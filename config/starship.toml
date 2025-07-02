@@ -1,0 +1,43 @@
+add_newline = false
+format = "$username$hostname $directory$git_branch$git_commit$git_status$character"
+right_format = "$kubernetes$aws"
+scan_timeout = 10
+
+[aws]
+disabled = true
+
+[aws.region_aliases]
+eu-central-1 = "eu-c-1"
+
+[character]
+disabled = false
+
+[directory]
+disabled = false
+fish_style_pwd_dir_length = 2
+
+[git_branch]
+disabled = false
+
+[git_commit]
+disabled = false
+
+[git_status]
+disabled = false
+
+[hostname]
+disabled = false
+format = "@[$hostname]($style)"
+ssh_only = true
+style = "gray"
+
+[kubernetes]
+detect_env_vars = ["KUBECONFIG"]
+disabled = false
+format = "'[$symbol$context( ($namespace))]($style)'"
+
+[username]
+disabled = false
+format = "[$user]($style)"
+show_always = true
+style_user = "bold blue"

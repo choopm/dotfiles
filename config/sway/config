@@ -1,0 +1,296 @@
+# inputs
+input * {
+    xkb_layout "de"
+    xkb_options ""
+    xkb_variant "neo"
+    tap enabled
+    natural_scroll disabled
+}
+input 12951:18804:* {
+    xkb_variant nodeadkeys
+}
+
+# Disable LVDS on lid switch
+set $Mon_LVDS eDP-1
+bindswitch --reload --locked lid:on output $Mon_LVDS disable
+bindswitch --reload --locked lid:off output $Mon_LVDS enable
+
+# monitor config: left/right portrait, mid landscape
+output "HDMI-A-1" mode 2560x1440@60Hz pos 0 0 transform 270
+output "DP-1" mode 3440x1440@100Hz pos 1440 670
+output "DP-2" mode 2560x1440@60Hz pos 4880 0 transform 90
+output "HDMI-A-1" bg ~/.wallpapers/left fit
+output "DP-1" bg ~/.wallpapers/mid fit
+output "DP-2" bg ~/.wallpapers/right fit
+
+# settings
+set $mod Mod4
+set $Alt Mod1
+
+set $terminal kitty
+set $terminal-floating kitty --class Terminal-floating
+
+set $screensaver swaylock -c '#000000' -e -F -s fit
+
+set $refreshbar killall -USR1 py3status
+set $setvolume pactl set-sink-volume @DEFAULT_SINK@
+set $setvolmute pactl set-sink-mute @DEFAULT_SINK@
+set $setmicmute pactl set-source-mute @DEFAULT_SOURCE@
+
+set $dokexec "sudo kexec --load /boot/vmlinuz-linux --initrd /boot/initramfs-linux.img --reuse-cmdline; sudo systemctl kexec"
+
+floating_modifier $mod
+font pango:Liberation Sans 9
+workspace_auto_back_and_forth yes
+focus_follows_mouse yes
+mouse_warping output
+
+# autoruns
+exec mako
+exec aa-notify -p -s 1 -w 10 -f /var/log/audit/audit.log
+exec autosnap-btrfs-root
+
+# start / kill
+bindsym $mod+Return                exec $terminal
+bindsym $mod+KP_Enter              exec $terminal
+bindsym $mod+Control+Return        exec $terminal-floating
+bindsym $mod+Control+KP_Enter      exec $terminal-floating
+bindsym $mod+Shift+Return          exec $terminal-floating
+bindsym $mod+Shift+KP_Enter        exec $terminal-floating
+bindsym $mod+adiaeresis            kill
+
+# sway commands
+bindsym $mod+Shift+c               reload
+bindsym $mod+z                     border toggle
+
+# launchers
+bindsym $mod+c                     exec wofi
+bindsym $mod+q                     exec wofi-pass -s
+bindsym $mod+ssharp                exec yubico-authenticator
+bindsym $mod+x                     exec wofi-notes
+bindsym $mod+w                     exec window-selector
+bindsym $mod+Shift+w               exec workspace-selector
+
+bindsym --release Print            exec wayland-scrot
+bindsym --release Shift+Print      exec wayland-scrot slurp
+
+# layout modifiers
+bindsym $mod+k                     split h
+bindsym $mod+p                     split v
+bindsym $mod+e                     fullscreen
+bindsym $mod+i                     layout stacking
+bindsym $mod+v                     layout tabbed
+bindsym $mod+l                     layout toggle split
+bindsym $mod+space                 floating toggle
+
+# audio bindings
+bindsym XF86AudioLowerVolume       exec $setvolume -5%; exec $refreshbar
+bindsym XF86AudioRaiseVolume       exec $setvolume +5%; exec $refreshbar
+bindsym $mod+Control+F4            exec $setvolume -5%; exec $refreshbar
+bindsym $mod+Control+F5            exec $setvolume +5%; exec $refreshbar
+bindsym XF86AudioMute              exec $setvolmute toggle; exec $refreshbar
+bindsym XF86AudioMicMute           exec $setmicmute toggle; exec $refreshbar
+
+# backlight bindings
+bindsym XF86MonBrightnessDown      exec brightnessctl set 10%-
+bindsym XF86MonBrightnessUp        exec brightnessctl set 10%+
+bindsym $mod+XF86MonBrightnessDown exec brightnessctl set 10%-
+bindsym $mod+XF86MonBrightnessUp   exec brightnessctl set 10%+
+bindsym $mod+Control+F9            exec brightnessctl set 10%-
+bindsym $mod+Control+F8            exec brightnessctl set 10%+
+
+# lock screen
+bindsym XF86ScreenSaver            exec $screensaver
+bindsym $mod+Scroll_Lock           exec $screensaver
+
+# change focus
+bindsym $mod+Left                  focus left
+bindsym $mod+Down                  focus down
+bindsym $mod+Up                    focus up
+bindsym $mod+Right                 focus right
+bindsym $mod+h                     [urgent=latest] focus
+bindsym $mod+u                     focus parent
+bindsym $mod+a                     focus child
+bindsym $mod+Escape                workspace back_and_forth
+bindsym $mod+Tab                   workspace back_and_forth
+
+bindsym $Alt+Escape                focus mode_toggle
+bindsym $Alt+Tab                   focus mode_toggle
+
+bindsym $mod+Control+Left          focus output left
+bindsym $mod+Control+Down          focus output down
+bindsym $mod+Control+Up            focus output up
+bindsym $mod+Control+Right         focus output right
+
+# move focused window
+bindsym $mod+Shift+Left            move left 100
+bindsym $mod+Shift+Down            move down 100
+bindsym $mod+Shift+Up              move up 100
+bindsym $mod+Shift+Right           move right 100
+
+bindsym $mod+Shift+Escape          move container to workspace back_and_forth; workspace back_and_forth
+bindsym $mod+Shift+Tab             move container to workspace back_and_forth; workspace back_and_forth
+
+bindsym $mod+b                     move scratchpad
+bindsym $mod+Shift+b               scratchpad show
+
+# move workspace
+bindsym $mod+Shift+Control+Left    move workspace to output left
+bindsym $mod+Shift+Control+Right   move workspace to output right
+bindsym $mod+Shift+Control+Up      move workspace to output up
+bindsym $mod+Shift+Control+Down    move workspace to output down
+bindsym $mod+Control+Next          move workspace to output right
+bindsym $mod+Control+Prior         move workspace to output left
+
+# workspaces
+set $ws1   "1: "
+set $ws2   "2: "
+set $ws3   "3: "
+set $ws4   "4: "
+set $ws5   "5: "
+set $ws6   "6: "
+set $ws7   7
+set $ws8   8
+set $ws9   9
+set $ws10  10
+set $ws11  11
+set $ws12  12
+set $ws13  13
+set $ws14  14
+set $ws15  15
+set $ws16  16
+set $ws16  16
+set $ws17  17
+set $ws18  18
+set $ws19  19
+set $ws20  20
+set $ws21  21
+set $ws22  "22: "
+
+# switch to workspace
+bindsym $mod+1     workspace $ws1
+bindsym $mod+2     workspace $ws2
+bindsym $mod+3     workspace $ws3
+bindsym $mod+4     workspace $ws4
+bindsym $mod+5     workspace $ws5
+bindsym $mod+6     workspace $ws6
+bindsym $mod+7     workspace $ws7
+bindsym $mod+8     workspace $ws8
+bindsym $mod+9     workspace $ws9
+bindsym $mod+0     workspace $ws10
+bindsym $mod+F1    workspace $ws11
+bindsym $mod+F2    workspace $ws12
+bindsym $mod+F3    workspace $ws13
+bindsym $mod+F4    workspace $ws14
+bindsym $mod+F5    workspace $ws15
+bindsym $mod+F6    workspace $ws16
+bindsym $mod+F7    workspace $ws17
+bindsym $mod+F8    workspace $ws18
+bindsym $mod+F9    workspace $ws19
+bindsym $mod+F10   workspace $ws20
+bindsym $mod+F11   workspace $ws21
+bindsym $mod+F12   workspace $ws22
+bindsym $mod+Next  workspace next
+bindsym $mod+Prior workspace prev
+
+# move focused container to workspace
+bindsym $mod+Shift+1     move container to workspace $ws1
+bindsym $mod+Shift+2     move container to workspace $ws2
+bindsym $mod+Shift+3     move container to workspace $ws3
+bindsym $mod+Shift+4     move container to workspace $ws4
+bindsym $mod+Shift+5     move container to workspace $ws5
+bindsym $mod+Shift+6     move container to workspace $ws6
+bindsym $mod+Shift+7     move container to workspace $ws7
+bindsym $mod+Shift+8     move container to workspace $ws8
+bindsym $mod+Shift+9     move container to workspace $ws9
+bindsym $mod+Shift+0     move container to workspace $ws10
+bindsym $mod+Shift+F1    move container to workspace $ws11
+bindsym $mod+Shift+F2    move container to workspace $ws12
+bindsym $mod+Shift+F3    move container to workspace $ws13
+bindsym $mod+Shift+F4    move container to workspace $ws14
+bindsym $mod+Shift+F5    move container to workspace $ws15
+bindsym $mod+Shift+F6    move container to workspace $ws16
+bindsym $mod+Shift+F7    move container to workspace $ws17
+bindsym $mod+Shift+F8    move container to workspace $ws18
+bindsym $mod+Shift+F9    move container to workspace $ws19
+bindsym $mod+Shift+F10   move container to workspace $ws20
+bindsym $mod+Shift+F11   move container to workspace $ws21
+bindsym $mod+Shift+F12   move container to workspace $ws22
+bindsym $mod+Shift+Next  move container to workspace next; workspace next
+bindsym $mod+Shift+Prior move container to workspace prev; workspace prev
+
+# window general
+for_window [shell="xwayland"] title_format "[XWayland] %title"
+for_window [app_id="^.*"]     border normal
+for_window [class="^.*"]      border normal
+
+# window floating
+for_window [app_id=".*-floating$"]               floating enable
+for_window [class="feh"]                         floating enable
+for_window [app_id="galculator"]                 floating enable
+for_window [app_id="org.pulseaudio.pavucontrol"] floating enable
+for_window [app_id="yubico-authenticator"]       floating enable
+for_window [app_id="com.yubico.yubioath"]        floating enable
+
+# workspace bindings
+assign [app_id="chromium"]    $ws2
+assign [app_id="firefox"]     $ws2
+assign [app_id="thunderbird"] $ws3
+
+# modes
+set $mode_pass_through pass-through
+mode "pass-through" {
+    bindsym $mod+BackSpace mode "default"
+}
+bindsym $mod+BackSpace mode "$mode_pass_through"
+
+set $mode_system System (l)ock, e(x)it, (s)uspend, (r)eboot, (R)eboot+firmware, (k)exec, (p)oweroff
+mode "$mode_system" {
+    bindsym l       exec $screensaver; mode "default"
+    bindsym x       exit; mode "default"
+    bindsym s       exec sudo systemctl suspend; mode "default"
+    bindsym r       exec sudo systemctl reboot; mode "default"
+    bindsym Shift+r exec sudo systemctl reboot --firmware-setup; mode "default"
+    bindsym p       exec sudo systemctl poweroff; mode "default"
+    bindsym k       exec $dokexec; mode "default"
+    bindsym Return  mode "default"
+    bindsym Escape  mode "default"
+}
+bindsym $mod+Shift+x mode "$mode_system"
+
+set $mode_resize Resize Window
+mode "$mode_resize" {
+    bindsym Left        resize shrink width 1 px or 1 ppt
+    bindsym Down        resize grow height 1 px or 1 ppt
+    bindsym Up          resize shrink height 1 px or 1 ppt
+    bindsym Right       resize grow width 1 px or 1 ppt
+
+    bindsym Shift+Left  resize shrink width 10 px or 10 ppt
+    bindsym Shift+Down  resize grow height 10 px or 10 ppt
+    bindsym Shift+Up    resize shrink height 10 px or 10 ppt
+    bindsym Shift+Right resize grow width 10 px or 10 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+odiaeresis mode "$mode_resize"
+
+# bars
+bindsym $mod+Control+z bar         mode toggle bottombar
+bindsym $mod                       bar hidden_state toggle bottombar
+
+bar {
+    id                      bottombar
+    position                bottom
+    #mode                    hide
+    hidden_state            hide
+    modifier                $mod
+    workspace_buttons       yes
+    binding_mode_indicator  yes
+    strip_workspace_numbers no
+    tray_output             *
+    status_command          py3status -c ~/.config/py3status/config -i  ~/.config/py3status/modules
+}
+
+include /etc/sway/config.d/*
+exec systemctl --user start sway-session.target

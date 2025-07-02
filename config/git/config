@@ -1,0 +1,43 @@
+[alias]
+	br = "branch"
+	ci = "commit -S"
+	co = "checkout"
+	hist = "log --pretty=format:\"%C(auto)%h %ad | %s%d [%an] %G?\" --graph --date=short"
+	st = "status -sb"
+	stat = "shortlog -sne --no-merges"
+
+[commit]
+	gpgsign = true
+
+[core]
+	autocrlf = "input"
+	safecrlf = false
+	whitespace = "trailing-space,space-before-tab"
+
+[diff]
+	tool = "vimdiff"
+
+[gpg]
+	format = "openpgp"
+
+[gpg "ssh"]
+	allowedSignersFile = "~/.config/git/allowed_signers"
+
+[init]
+	defaultBranch = "main"
+
+[merge]
+	tool = "vimdiff"
+
+[pull]
+	rebase = false
+
+[push]
+	default = "simple"
+
+[tag]
+	gpgsign = true
+
+[user]
+	email = "choopm@0pointer.org"
+	name = "Christoph Hoopmann"

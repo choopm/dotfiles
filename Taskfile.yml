@@ -1,0 +1,110 @@
+version: '3'
+
+set: [pipefail] # exit if any pipe component fails
+shopt: [globstar] # support double star glob paths: **/*.go
+
+# include env vars
+dotenv: ['.env']
+
+tasks:
+  default:
+    desc: Alias for task install
+    cmds:
+      - task: install
+
+  install:
+    desc: Installs everything
+    cmds:
+      - task: install-executables
+      - task: install-configs
+
+  install-executables:
+    desc: Installs symlinks for listed executables to ~/.local/bin/
+    vars:
+      DEST:
+        sh: 'realpath $HOME/.local/bin'
+      SOURCES:
+        map: # this map syntax requires task >= v3.43.0
+          'bin/arch-update.sh':         'update'
+          'bin/autosnap-btrfs-root.sh': 'autosnap-btrfs-root'
+          'bin/feh.sh':                 'feh'
+          'bin/mkrouter.sh':            'mkrouter'
+          'bin/py3status-bt-toggle.sh': 'py3status-bt-toggle'
+          'bin/slideshow.sh':           'slideshow'
+          'bin/termcolors.sh':          'termcolors'
+          'bin/usbguard-applet.sh':     'usbguard-applet'
+          'bin/wayland-scrot.sh':       'wayland-scrot'
+          'bin/window-selector.sh':     'window-selector'
+          'bin/wofi-notes.sh':          'wofi-notes'
+          'bin/workspace-selector.sh':  'workspace-selector'
+          'bin/zmkbat.sh':              'zmkbat'
+    cmds:
+      - for: { var: SOURCES }
+        task: install-symlink
+        vars:
+          SOURCE: '{{ .KEY }}'
+          TARGET: '{{ .ITEM }}'
+          DEST: '{{ .DEST }}'
+
+  install-configs:
+    desc: Installs symlinks for listed dotconfig directories or files
+    vars:
+      DEST:
+        sh: 'realpath $HOME'
+      SOURCES:
+        map: # this map syntax requires task >= v3.43.0
+          'config/environment.d':        '.config/environment.d'
+          'config/git':                  '.config/git'
+          'config/kitty':                '.config/kitty'
+          'config/mako':                 '.config/mako'
+          'config/nvim':                 '.config/nvim'
+          'config/py3status':            '.config/py3status'
+          'config/ssh':                  '.ssh'
+          'config/sway':                 '.config/sway'
+          'config/vscode/settings.json': '.config/Code/User/settings.json'
+          'config/wofi':                 '.config/wofi'
+          'config/zplugins':             '.zplugins'
+
+          'config/gitconfig':     '.gitconfig'
+          'config/starship.toml': '.config/starship.toml'
+          'config/zlogin':        '.zlogin'
+          'config/zshrc':         '.zshrc'
+    cmds:
+      - task: ensure-uncommitted
+      - for: { var: SOURCES }
+        task: install-symlink
+        vars:
+          SOURCE: '{{ .KEY }}'
+          TARGET: '{{ .ITEM }}'
+          DEST: '{{ .DEST }}'
+
+  ensure-uncommitted:
+    internal: true
+    silent: true
+    desc: Creates missing files and directories which are not committed to git
+    vars:
+      DIRS:
+        - 'config/ssh'
+      FILES:
+        - 'config/git/allowed_signers'
+        - 'config/gitconfig'
+    cmds:
+      - for: { var: DIRS }
+        cmd: mkdir -p {{ .ITEM }}
+      - for: { var: FILES }
+        cmd: touch {{ .ITEM }}
+
+  install-symlink:
+    internal: true
+    silent: true
+    desc: Forcefully installs a symlink from SOURCE to DEST/TARGET
+    vars:
+      SOURCE: '{{ .SOURCE }}'
+      TARGET: '{{ .TARGET }}'
+      DEST: '{{ .DEST }}'
+    requires:
+      vars: [SOURCE, TARGET, DEST]
+    cmds:
+      - echo -e "$(realpath {{ .SOURCE }}) => \t{{ .DEST }}/{{ .TARGET }}"
+      - rm -f {{ .DEST }}/{{ .TARGET }}
+      - ln -sfT $(realpath {{ .SOURCE }}) {{ .DEST }}/{{ .TARGET }}
