@@ -24,7 +24,7 @@ sudo pacman -Syu \
     mako \
     neovim \
     starship \
-    sway swaybar swaybg py3status \
+    sway swaybg py3status \
     wl-clipboard \
     wofi \
     xdg-desktop-portal-wlr

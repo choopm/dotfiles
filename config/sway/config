@@ -19,9 +19,12 @@ bindswitch --reload --locked lid:off output $Mon_LVDS enable
 output "HDMI-A-1" mode 2560x1440@60Hz pos 0 0 transform 270
 output "DP-1" mode 3440x1440@100Hz pos 1440 670
 output "DP-2" mode 2560x1440@60Hz pos 4880 0 transform 90
-output "HDMI-A-1" bg ~/.wallpapers/left fit
-output "DP-1" bg ~/.wallpapers/mid fit
-output "DP-2" bg ~/.wallpapers/right fit
+
+# wallpapers (created using span-wallpaper)
+output "HDMI-A-1" bg ~/.wallpapers/HDMI-A-1 fit
+output "DP-1" bg ~/.wallpapers/DP-1 fit
+output "DP-2" bg ~/.wallpapers/DP-2 fit
+output "eDP-1" bg ~/.wallpapers/eDP-1 fit
 
 # settings
 set $mod Mod4

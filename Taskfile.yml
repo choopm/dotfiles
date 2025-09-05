@@ -31,6 +31,7 @@ tasks:
           'bin/mkrouter.sh':            'mkrouter'
           'bin/py3status-bt-toggle.sh': 'py3status-bt-toggle'
           'bin/slideshow.sh':           'slideshow'
+          'bin/span-wallpaper.sh':      'span-wallpaper'
           'bin/termcolors.sh':          'termcolors'
           'bin/usbguard-applet.sh':     'usbguard-applet'
           'bin/wayland-scrot.sh':       'wayland-scrot'

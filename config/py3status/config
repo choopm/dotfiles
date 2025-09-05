@@ -248,6 +248,8 @@ order += "pwaudiosink"
 pwaudiosink {
     display_name_mapping = {
         "Rembrandt Radeon High Definition Audio Controller Digital Stereo (HDMI 3)": "Display",
+        "Radeon High Definition Audio Controller [Rembrandt/Strix] Digital Stereo (HDMI 3)": "Display",
+        "Internes Audio Analoges Stereo": "Builtin",
         "Yealink WH64 Analoges Stereo": "Yealink",
         "Bose": "Bose"
     }
