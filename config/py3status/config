@@ -21,7 +21,7 @@ scratchpad {
 
 order += "arch_updates"
 arch_updates {
-    cache_timeout = 600
+    cache_timeout = 3600
     format = " {pacman}/{aur}"
     hide_if_zero = True
     on_click 1 = "refresh"

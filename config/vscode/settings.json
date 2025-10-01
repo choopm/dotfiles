@@ -6,13 +6,26 @@
     "editor.formatOnSave": true,
     "editor.insertSpaces": false
   },
+  "go.formatTool": "gofmt",
+  "go.toolsManagement.autoUpdate": true,
+  "go.toolsManagement.checkForUpdates": "local",
+  "go.useLanguageServer": true,
+  "go.survey.prompt": false,
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "chat.commandCenter.enabled": false,
+  "svelte.enable-ts-plugin": true,
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": false
+  },
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
@@ -28,17 +41,12 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "go.formatTool": "gofmt",
-  "go.toolsManagement.autoUpdate": true,
-  "go.toolsManagement.checkForUpdates": "local",
-  "go.useLanguageServer": true,
-  "nix.enableLanguageServer": true,
-  "nix.formatterPath": "nixpkgs-fmt",
-  "nix.serverPath": "nixd",
   "remote.autoForwardPortsSource": "hybrid",
+  "chat.commandCenter.enabled": false,
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.fontFamily": "Meslo LG S DZ for Powerline",
   "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.stickyScroll.enabled": false,
   "workbench.editorAssociations": {
     "*.pdf": "default"
   },
