@@ -42,7 +42,6 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "remote.autoForwardPortsSource": "hybrid",
-  "chat.commandCenter.enabled": false,
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.fontFamily": "Meslo LG S DZ for Powerline",
   "terminal.integrated.scrollback": 10000,

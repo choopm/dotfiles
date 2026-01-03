@@ -40,7 +40,7 @@ set $setvolume pactl set-sink-volume @DEFAULT_SINK@
 set $setvolmute pactl set-sink-mute @DEFAULT_SINK@
 set $setmicmute pactl set-source-mute @DEFAULT_SOURCE@
 
-set $dokexec "sudo kexec --load /boot/vmlinuz-linux --initrd /boot/initramfs-linux.img --reuse-cmdline; sudo systemctl kexec"
+set $dokexec "REL=$(uname -r | sed -E 's/[0-9]+\.[0-9]+\.[0-9]+-?[0-9]*//'); sudo kexec --load /boot/vmlinuz-linux${REL} --initrd /boot/initramfs-linux${REL}.img --reuse-cmdline; sudo systemctl kexec"
 
 floating_modifier $mod
 font pango:Liberation Sans 9
@@ -72,6 +72,7 @@ bindsym $mod+q                     exec wofi-pass -s
 bindsym $mod+ssharp                exec yubico-authenticator
 bindsym $mod+x                     exec wofi-notes
 bindsym $mod+w                     exec window-selector
+bindsym $mod+g                     exec window-selector
 bindsym $mod+Shift+w               exec workspace-selector
 
 bindsym --release Print            exec wayland-scrot
@@ -234,11 +235,13 @@ for_window [app_id="galculator"]                 floating enable
 for_window [app_id="org.pulseaudio.pavucontrol"] floating enable
 for_window [app_id="yubico-authenticator"]       floating enable
 for_window [app_id="com.yubico.yubioath"]        floating enable
+for_window [app_id="chrome-.*-Default"]          floating enable
 
 # workspace bindings
 assign [app_id="chromium"]    $ws2
 assign [app_id="firefox"]     $ws2
 assign [app_id="thunderbird"] $ws3
+assign [app_id="org.mozilla.Thunderbird"] $ws3
 
 # modes
 set $mode_pass_through pass-through
