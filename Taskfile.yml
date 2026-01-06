@@ -27,6 +27,7 @@ tasks:
         map: # this map syntax requires task >= v3.43.0
           'bin/arch-update.sh':         'update'
           'bin/autosnap-btrfs-root.sh': 'autosnap-btrfs-root'
+          'bin/eject-drive.sh':         'eject-drive'
           'bin/feh.sh':                 'feh'
           'bin/mkrouter.sh':            'mkrouter'
           'bin/py3status-bt-toggle.sh': 'py3status-bt-toggle'
