@@ -56,6 +56,7 @@ tasks:
       SOURCES:
         map: # this map syntax requires task >= v3.43.0
           'config/environment.d':        '.config/environment.d'
+          'config/flameshot':            '.config/flameshot'
           'config/git':                  '.config/git'
           'config/kitty':                '.config/kitty'
           'config/mako':                 '.config/mako'

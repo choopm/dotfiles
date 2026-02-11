@@ -75,8 +75,8 @@ bindsym $mod+w                     exec window-selector
 bindsym $mod+g                     exec window-selector
 bindsym $mod+Shift+w               exec workspace-selector
 
-bindsym --release Print            exec wayland-scrot
-bindsym --release Shift+Print      exec wayland-scrot slurp
+bindsym --release Print            exec flameshot full
+bindsym --release Shift+Print      exec flameshot gui
 
 # layout modifiers
 bindsym $mod+k                     split h
@@ -242,6 +242,9 @@ assign [app_id="chromium"]    $ws2
 assign [app_id="firefox"]     $ws2
 assign [app_id="thunderbird"] $ws3
 assign [app_id="org.mozilla.Thunderbird"] $ws3
+
+# flameshot
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
 
 # modes
 set $mode_pass_through pass-through

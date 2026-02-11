@@ -27,5 +27,6 @@ sudo pacman -Syu \
     sway swaybg py3status \
     wl-clipboard \
     wofi \
-    xdg-desktop-portal-wlr
+    xdg-desktop-portal-wlr \
+    flameshot
 ```
