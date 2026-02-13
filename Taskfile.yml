@@ -39,6 +39,7 @@ tasks:
           'bin/window-selector.sh':     'window-selector'
           'bin/wofi-notes.sh':          'wofi-notes'
           'bin/workspace-selector.sh':  'workspace-selector'
+          'bin/yaycache.sh':            'yaycache'
           'bin/zmkbat.sh':              'zmkbat'
     cmds:
       - for: { var: SOURCES }

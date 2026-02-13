@@ -1,0 +1,542 @@
+#!/usr/bin/bash
+#
+# yaycache - flexible yay cache cleaning
+#
+# Copyright (C) 2011 Dave Reisner <dreisner@archlinux.org>
+# Copyright (C) 2023 Antony Kellermann <antony@aokellermann.dev>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+# Expand to nothing if there are no matches
+shopt -s nullglob
+shopt -s extglob
+
+declare -r myname='yaycache'
+declare -r myver='0.3.4'
+
+LIBRARY=${LIBRARY:-'/usr/share/makepkg'}
+
+declare -a cachedirs=() candidates=() buildfiles=() cmdopts=() whitelist=() blacklist=()
+declare -i delete=0 dryrun=0 filecount=0 move=0 needsroot=0 totalsaved=0 verbose=0 removebuild=0
+declare -i min_atime=0 min_mtime=0
+declare    delim=$'\n' keep=3 movedir='' scanarch=''
+
+QUIET=0
+USE_COLOR='y'
+
+declare -r pkg_re='(.+)-[^-]+-[0-9]+-([^.]+)\.pkg.*'
+
+# Import libmakepkg
+# shellcheck source=/dev/null
+source "$LIBRARY"/util/message.sh
+# shellcheck source=/dev/null
+source "$LIBRARY"/util/parseopts.sh
+
+die() {
+	error "$@"
+	exit 1
+}
+
+# reads a list of files on stdin and prints out deletion candidates
+pkgfilter() {
+	# there's whitelist and blacklist parameters passed to this
+	# script after the block of awk.
+
+	awk -v keep="$1" -v scanarch="$2" -v min_atime="$3" -v min_mtime="$4" '
+	function basename(str) {
+		sub(".*/", "", str);
+		return str;
+	}
+
+	function parse_filename(filename,
+				atime, mtime, parts, count, i, pkgname, arch) {
+
+		if (0 + min_atime + min_mtime != 0) {
+			# atime and mtime are in the first two columns and the
+			# separator is a single space
+			split(filename, parts, " ")
+			atime = parts[1]
+			mtime = parts[2]
+			filename = substr(filename, length(atime) + length(mtime) + 3)
+		}
+
+		count = split(basename(filename), parts, "-")
+
+		i = 1
+		pkgname = parts[i++]
+		while (i <= count - 3) {
+			pkgname = pkgname "-" parts[i++]
+		}
+
+		arch = substr(parts[count], 1, index(parts[count], ".") - 1)
+
+		# filter on whitelist or blacklist
+		if (wlen && !whitelist[pkgname]) return
+		if (blen && blacklist[pkgname]) return
+
+		if ("" == packages[pkgname,arch]) {
+			packages[pkgname,arch] = filename
+			atimes[pkgname,arch] = atime
+			mtimes[pkgname,arch] = mtime
+		} else {
+			packages[pkgname,arch] = packages[pkgname,arch] SUBSEP filename
+			atimes[pkgname,arch] = atimes[pkgname,arch] SUBSEP atime
+			mtimes[pkgname,arch] = mtimes[pkgname,arch] SUBSEP mtime
+		}
+	}
+
+	BEGIN {
+		# create whitelist
+		wlen = ARGV[1]; delete ARGV[1]
+		for (i = 2; i < 2 + wlen; i++) {
+			whitelist[ARGV[i]] = 1
+			delete ARGV[i]
+		}
+
+		# create blacklist
+		blen = ARGV[i]; delete ARGV[i]
+		while (i++ < ARGC) {
+			blacklist[ARGV[i]] = 1
+			delete ARGV[i]
+		}
+
+		# read package filenames
+		while (getline < "/dev/stdin") {
+			parse_filename($0)
+		}
+
+		for (pkglist in packages) {
+			# idx[1,2] = idx[pkgname,arch]
+			split(pkglist, idx, SUBSEP)
+
+			# enforce architecture match if specified
+			if (!scanarch || scanarch == idx[2]) {
+				count = split(packages[idx[1], idx[2]], pkgs, SUBSEP)
+				split(atimes[idx[1], idx[2]], atime, SUBSEP)
+				split(mtimes[idx[1], idx[2]], mtime, SUBSEP)
+				for(i = 1; i <= count - keep; i++) {
+					# If checking file age, potentially keep more candidates
+					if ((0 + min_atime == 0 || (strtonum(atime[i]) < 0 + min_atime)) &&
+					    (0 + min_mtime == 0 || (strtonum(mtime[i]) < 0 + min_mtime)) \
+					    ) {
+						print pkgs[i]
+					}
+				}
+			}
+		}
+	}' "${@:5}"
+}
+
+bffilter() {
+	# there's whitelist and blacklist parameters passed to this
+	# script after the block of awk.
+
+	awk -v cachedir="$1" -v min_atime="$2" -v min_mtime="$3" '
+	function parse_filename(filename,
+				atime, mtime, parts) {
+
+		if (0 + min_atime + min_mtime != 0) {
+			# atime and mtime are in the first two columns and the
+			# separator is a single space
+			split(filename, parts, " ")
+			atime = parts[1]
+			mtime = parts[2]
+			filename = substr(filename, length(atime) + length(mtime) + 3)
+		}
+
+		# filter on whitelist or blacklist
+		if (wlen && !whitelist[cachedir]) return
+		if (blen && blacklist[cachedir]) return
+
+    # Use full path as key to avoid basename collisions
+    files[filename] = filename
+    atimes[filename] = atime
+    mtimes[filename] = mtime
+	}
+
+	BEGIN {
+		# create whitelist
+		wlen = ARGV[1]; delete ARGV[1]
+		for (i = 2; i < 2 + wlen; i++) {
+			whitelist[ARGV[i]] = 1
+			delete ARGV[i]
+		}
+
+		# create blacklist
+		blen = ARGV[i]; delete ARGV[i]
+		while (i++ < ARGC) {
+			blacklist[ARGV[i]] = 1
+			delete ARGV[i]
+		}
+
+		# read filenames
+		while (getline < "/dev/stdin") {
+			parse_filename($0)
+		}
+
+		for (f in files) {
+			atime = atimes[f]
+			mtime = mtimes[f]
+
+      # If checking file age, potentially keep more candidates
+      if ((0 + min_atime == 0 || (strtonum(atime) < 0 + min_atime)) &&
+          (0 + min_mtime == 0 || (strtonum(mtime) < 0 + min_mtime)) \
+          ) {
+        print files[f]
+      }
+		}
+	}' "${@:4}"
+}
+
+# shellcheck disable=SC1073,SC1065,SC1064,SC1072
+#!/bin/bash
+
+size_to_human() {
+	awk -v size="$1" '
+	BEGIN {
+		suffix[1] = "B"
+		suffix[2] = "KiB"
+		suffix[3] = "MiB"
+		suffix[4] = "GiB"
+		suffix[5] = "TiB"
+		suffix[6] = "PiB"
+		suffix[7] = "EiB"
+		count = 1
+
+		while (size > 1024) {
+			size /= 1024
+			count++
+		}
+
+		sizestr = sprintf("%.2f", size)
+		sub(/\.?0+$/, "", sizestr)
+		printf("%s %s", sizestr, suffix[count])
+	}'
+}
+
+
+runcmd() {
+	if (( needsroot && EUID != 0 )); then
+		msg 'Escalating privileges using sudo'
+		if sudo -v &>/dev/null && sudo -l &>/dev/null; then
+			sudo "$@"
+		else
+			die 'Failed to escalate'
+		fi
+	else
+		"$@"
+	fi
+}
+
+summarize() {
+	(( QUIET )) && return
+
+	local -i filecount=$1; shift
+	local name='' path=''
+
+	if (( delete )); then
+		printf -v output 'finished: %d files removed' "$filecount"
+	elif (( move )); then
+		printf -v output "finished: %d packages moved to '%s'" "$filecount" "$movedir"
+	elif (( dryrun )); then
+		if (( verbose )); then
+			msg 'Candidate files:'
+			while read -r pkg; do
+				if (( verbose >= 3 )); then
+					if [[ -z $path || $pkg != "$path"* ]]; then
+						for cachedir in "${cachedirs[@]}"; do
+							if [[ $pkg == "$cachedir"* ]]; then
+								path=$cachedir
+								name=$(basename "$cachedir")
+								printf '%s:\n' "${name}"
+								break
+							fi
+						done
+					fi
+
+					printf '  %s\n' "$pkg"
+				elif (( verbose >= 2 )); then
+					printf "%s$delim" "$pkg"
+				else
+					printf "%s$delim" "${pkg##*/}"
+				fi
+			done < <(printf '%s\n' "$@" | sort)
+		fi
+		printf -v output 'finished dry run: %d candidates' "$filecount"
+	fi
+
+	echo
+	msg "$output (disk space saved: %s)" "$(size_to_human "$totalsaved")"
+}
+
+usage() {
+	cat <<EOF
+${myname} v${myver}
+
+Flexible yay cache cleaning utility.
+
+Usage: ${myname} <operation> [options] [target ...]
+
+Operations:
+  -d, --dryrun      perform a dry run, only finding candidate packages
+  -m, --move <dir>  move candidate packages to "dir" (build files not supported)
+  -r, --remove      remove candidate packages
+
+Options:
+  -a, --arch <arch>       	scan for "arch". will not apply to build files. (default: all architectures)
+  -c, --cachedir <dir>    	scan "dir" for packages. can be used more than once
+                          	(default: '\$XDG_CACHE_HOME/yay/*/'. if \$XDG_CACHE_HOME is unset, the config directory will fall back to '\$HOME/.cache/yay/*/')
+  -f, --force             	apply force to mv(1) and rm(1) operations
+  -i, --ignore <pkgs>     	ignore "pkgs", comma-separated. Alternatively, specify
+                          	"-" to read package names from stdin, newline-
+                          	delimited
+  -k, --keep <num>        	keep "num" of each package in the cache (default: 3)
+      --remove-build-files	remove package source build files
+      --min-atime <time>
+      --min-mtime <time>  	keep packages with an atime/mtime that is not older
+                          	than the time given, even if this means keeping more
+                          	than specified through the '--keep' option. Accepts
+                          	arguments according to 'info "Date input formats"',
+                          	e.g. '30 days ago'
+      --nocolor           	do not colorize output
+  -z, --null              	use null delimiters for candidate names (only with -v
+                          	and -vv)
+  -q, --quiet             	minimize output
+  -u, --uninstalled       	target uninstalled packages
+  -v, --verbose           	increase verbosity. specify up to 3 times
+  -h, --help              	display this help message and exit
+  -V, --version           	display version information and exit
+EOF
+}
+
+version() {
+	printf "%s %s\n" "$myname" "$myver"
+	echo 'Copyright (C) 2011 Dave Reisner <dreisner@archlinux.org>'
+	echo 'Copyright (C) 2023 Antony Kellermann <antony@aokellermann.dev>'
+}
+
+OPT_SHORT=':a:c:dfhi:k:m:qrsuVvz'
+OPT_LONG=('arch:' 'cachedir:' 'dryrun' 'force' 'help' 'ignore:' 'keep:' 'move:'
+          'nocolor' 'quiet' 'remove' 'uninstalled' 'version' 'verbose' 'null'
+          'min-atime:' 'min-mtime:' 'remove-build-files')
+
+if ! parseopts "$OPT_SHORT" "${OPT_LONG[@]}" -- "$@"; then
+	exit 1
+fi
+set -- "${OPTRET[@]}"
+unset OPT_SHORT OPT_LONG OPTRET
+
+while :; do
+	case $1 in
+		-a|--arch)
+			scanarch=$2
+			shift ;;
+		-c|--cachedir)
+			cachedirs+=("$2")
+			shift ;;
+		-d|--dryrun)
+			dryrun=1 ;;
+		-f|--force)
+			cmdopts=(-f) ;;
+		-i|--ignore)
+			if [[ $2 = '-' ]]; then
+				[[ ! -t 0 ]] && IFS=$'\n' read -r -d '' -a ign
+			else
+				IFS=',' read -r -a ign <<< "$2"
+			fi
+			blacklist+=("${ign[@]}")
+			unset i ign
+			shift ;;
+		-k|--keep)
+			keep=$2
+			if [[ -z $keep || -n ${keep//[0-9]/} ]]; then
+				die 'argument to option -k must be a non-negative integer'
+			else
+				keep=$(( 10#$keep ))
+			fi
+			shift ;;
+    --remove-build-files)
+      removebuild=1 ;;
+		--min-atime)
+			min_atime=$(date -d "$2" +%s)
+			min_atime_status=$?
+			if (( min_atime_status )); then
+				die "argument to option --min-atime must be of the form described by 'info \"Date input formats\" '."
+			fi
+			shift ;;
+		--min-mtime)
+			min_mtime=$(date -d "$2" +%s)
+			min_mtime_status=$?
+			if (( min_mtime_status )); then
+				die "argument to option --min-mtime must be of the form described by 'info \"Date input formats\" '."
+			fi
+			shift ;;
+		-m|--move)
+			move=1 movedir=$2
+			shift ;;
+		--nocolor)
+			USE_COLOR='n' ;;
+		-z|--null)
+			delim='\0' ;;
+		-q|--quiet)
+			QUIET=1 ;;
+		-r|--remove)
+			delete=1 ;;
+		-u|--uninstalled)
+			IFS=$'\n' read -r -d '' -a ign < <(pacman -Qq)
+			# pacman -Qq may exit with an error, thus making ign an empty array
+			(( ${#ign[@]} )) || die 'failed to retrieve the list of installed packages'
+			blacklist+=("${ign[@]}")
+			unset ign ;;
+		-v|--verbose)
+			(( ++verbose )) ;;
+		-h|--help)
+			usage
+			exit 0 ;;
+		-V|--version)
+			version
+			exit 0 ;;
+		--)
+			shift
+			break 2 ;;
+	esac
+	shift
+done
+
+# check if messages are to be printed using color
+if [[ -t 2 && $USE_COLOR != "n" ]]; then
+	colorize
+else
+	unset ALL_OFF BOLD BLUE GREEN RED YELLOW
+fi
+
+# setting default cachedirs
+if [[ -z "${cachedirs[0]}" ]]; then
+  if [ -z ${XDG_CACHE_HOME+x} ]; then
+    cachedirs=("$HOME"/.cache/yay/*/)
+  else
+    cachedirs=("$XDG_CACHE_HOME"/yay/*/)
+  fi
+fi
+
+# remaining args are a whitelist
+whitelist=("$@")
+
+# sanity checks
+case $(( dryrun+delete+move )) in
+	0) die 'no operation specified (use -h for help)' ;;
+	[^1]) die 'only one operation may be used at a time' ;;
+esac
+
+[[ $movedir && ! -d $movedir ]] &&
+	die "destination directory '%s' does not exist or is not a directory" "$movedir"
+
+if (( move || delete )); then
+	# make it an absolute path since we're about to chdir
+	[[ $movedir && ${movedir:0:1} != '/' ]] && movedir=$PWD/$movedir
+	[[ $movedir && ! -w $movedir ]] && needsroot=1
+fi
+
+pkgcount=0
+found=0
+for cachedir in "${cachedirs[@]}"; do
+	[[ -d $cachedir ]] ||
+		die "cachedir '%s' does not exist or is not a directory" "$cachedir"
+
+	if (( move || delete )); then
+		[[ ! -w $cachedir ]] && needsroot=1
+	fi
+
+	# unlikely that this will fail, but better make sure
+	pushd "$cachedir" &>/dev/null || die "failed to chdir to '%s'" "$cachedir"
+
+	# note that these results are returned in an arbitrary order from awk, but
+	# they'll be resorted (in summarize) iff we have a verbosity level set.
+	IFS=$'\n' read -r -d '' -a cand < \
+		<(	if (( min_atime || min_mtime )); then
+				find "$PWD" -name '*.pkg.tar*.sig' -prune -o \( -name '*.pkg.tar*' -printf '%A@ %T@ %p\n' \) |
+				pacsort --files --key 3 --separator ' '
+			else
+				printf '%s\n' "$PWD"/*.pkg.tar* |
+				pacsort --files
+			fi |
+			pkgfilter "$keep" "$scanarch" "$min_atime" "$min_mtime" \
+				"${#whitelist[*]}" "${whitelist[@]}" \
+				"${#blacklist[*]}" "${blacklist[@]}")
+
+  (( ${#cand[*]} )) && found=1
+	candidates+=("${cand[@]}")
+	unset cand
+
+  if (( removebuild )); then
+    IFS=$'\n' read -r -d '' -a bfs < \
+      <(git ls-files --others | xargs -d '\n' -r printf "$PWD/%s\0" |
+      	if (( min_atime || min_mtime )); then
+        	find -files0-from - -printf '%A@ %T@ %p\n'
+        else
+        	find -files0-from -
+        fi |
+        grep -v -e '.pkg.tar*' |
+        bffilter "$(basename "$cachedir")" "$min_atime" "$min_mtime" \
+          "${#whitelist[*]}" "${whitelist[@]}" \
+          "${#blacklist[*]}" "${blacklist[@]}")
+
+    (( ${#bfs[*]} )) && found=1
+    buildfiles+=("${bfs[@]}")
+    unset bfs
+  fi
+
+  (( found )) && (( pkgcount++ ))
+  found=0
+
+	popd &>/dev/null
+done
+
+if (( ! $pkgcount )); then
+	msg 'no candidate packages found for pruning'
+	exit 0
+fi
+
+# merge in build files
+# not supported for move operation
+(( move )) || candidates+=("${buildfiles[@]}")
+
+# do this before we destroy anything
+totalsaved=$(printf '%s\0' "${candidates[@]}" | xargs -0 stat -c %s |
+		awk '{ sum += $1 } END { print sum }')
+
+# check if any candidates require root permissions
+if (( move || delete )); then
+	for candidate in "${candidates[@]}"; do
+		parent_dir=$(dirname "$candidate")
+		if [[ ! -w "$parent_dir" ]]; then
+			needsroot=1
+			break
+		fi
+	done
+fi
+
+# Exit immediately if a pipeline returns non-zero.
+set -o errexit
+
+# crush. kill. destroy.
+(( verbose )) && cmdopts+=(-v)
+if (( delete )); then
+	printf '%s\0' "${candidates[@]}" | runcmd xargs -0 rm -r "${cmdopts[@]}"
+elif (( move )); then
+	printf '%s\0' "${candidates[@]}" | runcmd xargs -0 mv "${cmdopts[@]}" -t "$movedir"
+fi
+
+summarize "$pkgcount" "${candidates[@]}"
