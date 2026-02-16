@@ -51,5 +51,18 @@
   },
   "workbench.navigationControl.enabled": false,
   "workbench.quickOpen.preserveInput": true,
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "playwright.reuseBrowser": true,
+  "chat.agent.enabled": false,
+  "terminal.integrated.initialHint": false,
+  "git.blame.statusBarItem.enabled": false
 }
