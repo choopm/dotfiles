@@ -15,10 +15,20 @@ set $Mon_LVDS eDP-1
 bindswitch --reload --locked lid:on output $Mon_LVDS disable
 bindswitch --reload --locked lid:off output $Mon_LVDS enable
 
-# monitor config: left/right portrait, mid landscape
-output "HDMI-A-1" mode 2560x1440@60Hz pos 0 0 transform 270
-output "DP-1" mode 3440x1440@100Hz pos 1440 670
-output "DP-2" mode 2560x1440@60Hz pos 4880 0 transform 90
+# # monitor config: left/right portrait, mid landscape
+# output "HDMI-A-1" mode 2560x1440@60Hz pos 0 0 transform 270
+# output "DP-1" mode 3440x1440@100Hz pos 1440 670
+# output "DP-2" mode 2560x1440@60Hz pos 4880 0 transform 90
+
+# # monitor config: left/mid landscape, right portrait
+# output "HDMI-A-1" mode 2560x1440@60Hz pos 0 670
+# output "DP-1" mode 3440x1440@100Hz pos 2560 670
+# output "DP-2" mode 2560x1440@60Hz pos 6000 0 transform 90
+
+# monitor config: top/center landscape, right portrait
+output "HDMI-A-1" mode 2560x1440@60Hz pos 0 0
+output "DP-1" mode 3440x1440@100Hz pos 340 1440
+output "DP-2" mode 2560x1440@60Hz pos 3780 420 transform 90
 
 # wallpapers (created using span-wallpaper)
 output "HDMI-A-1" bg ~/.wallpapers/HDMI-A-1 fit
