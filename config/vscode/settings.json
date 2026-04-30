@@ -64,5 +64,7 @@
   "playwright.reuseBrowser": true,
   "chat.agent.enabled": false,
   "terminal.integrated.initialHint": false,
-  "git.blame.statusBarItem.enabled": false
+  "git.blame.statusBarItem.enabled": false,
+  "workbench.colorTheme": "Dark Modern",
+  "workbench.secondarySideBar.defaultVisibility": "hidden"
 }
