@@ -30,6 +30,7 @@ tasks:
           'bin/eject-drive.sh':         'eject-drive'
           'bin/feh.sh':                 'feh'
           'bin/git-scrub.sh':           'git-scrub'
+          'bin/handle-mdadm-events.sh': 'handle-mdadm-events'
           'bin/mkrouter.sh':            'mkrouter'
           'bin/py3status-bt-toggle.sh': 'py3status-bt-toggle'
           'bin/slideshow.sh':           'slideshow'

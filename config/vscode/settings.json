@@ -66,5 +66,11 @@
   "terminal.integrated.initialHint": false,
   "git.blame.statusBarItem.enabled": false,
   "workbench.colorTheme": "Dark Modern",
-  "workbench.secondarySideBar.defaultVisibility": "hidden"
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "window.commandCenter": false,
+  "workbench.openInAgents.enabled": false,
+  "workbench.layoutControl.enabled": false,
+  "workbench.browser.showInTitleBar": false,
+  "workbench.editor.editorActionsLocation": "hidden",
+  "chat.disableAIFeatures": true
 }
